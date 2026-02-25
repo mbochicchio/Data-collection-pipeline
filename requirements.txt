@@ -1,0 +1,28 @@
+# -----------------------------------------------------------------------
+# Core runtime
+# -----------------------------------------------------------------------
+
+# Apache Airflow — keep the constraint file in sync with this version
+apache-airflow==3.1.7
+
+# DuckDB — embedded OLAP database used as the single source of truth
+duckdb==1.2.2
+
+# GitHub REST API client with rate-limit handling
+PyGithub==2.5.0
+
+# HTTP client used directly for streaming repo archives
+requests==2.32.3
+
+# -----------------------------------------------------------------------
+# Utilities
+# -----------------------------------------------------------------------
+
+# Retry decorator used in GitHub / Designite wrappers
+tenacity==9.1.2
+
+# -----------------------------------------------------------------------
+# Dev / test (not installed in production image)
+# -----------------------------------------------------------------------
+# pytest==8.3.5
+# pytest-cov==6.1.0
