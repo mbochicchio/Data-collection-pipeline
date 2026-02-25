@@ -1,13 +1,12 @@
 # ---------------------------------------------------------------------------
 # Data-collection-pipeline — Docker Compose (local dev)
+# Compatible with Apache Airflow 3.x
 #
 # Usage:
 #   cp .env.example .env          # fill in GITHUB_TOKEN etc.
 #   docker compose up airflow-init
 #   docker compose up -d
 #   open http://localhost:8080     # Airflow UI  (admin / admin)
-#
-# NOTE: Uses Airflow 3.x — the webserver is now called "api-server"
 # ---------------------------------------------------------------------------
 
 x-airflow-common: &airflow-common
@@ -21,13 +20,22 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__CORE__LOAD_EXAMPLES: "false"
     AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/pipeline/dags
+
+    # Airflow 3.x requires explicit auth manager
+    AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+
+    # Database
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+
+    # API server (Airflow 3.x — replaces webserver)
+    AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://airflow-apiserver:8080/execution/"
 
     # Pipeline settings (can also be set in .env)
     DUCKDB_PATH: /opt/airflow/data/pipeline.duckdb
     DATA_DIR: /opt/airflow/data
     WORKSPACE_DIR: /opt/airflow/workspace
     PYTHONPATH: /opt/airflow/pipeline
+
   volumes:
     # Source code — live-reload without rebuilding the image during development
     - ./dags:/opt/airflow/pipeline/dags
@@ -35,6 +43,7 @@ x-airflow-common: &airflow-common
     - ./config:/opt/airflow/pipeline/config
     - ./plugins:/opt/airflow/pipeline/plugins
     - ./scripts:/opt/airflow/pipeline/scripts
+    - ./logs:/opt/airflow/logs
 
     # Persistent data — DuckDB file survives container restarts
     - pipeline-data:/opt/airflow/data
@@ -102,7 +111,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s
+      start_period: 60s
 
   # -------------------------------------------------------------------------
   # Airflow scheduler
@@ -118,13 +127,26 @@ services:
       start_period: 30s
 
   # -------------------------------------------------------------------------
-  # Airflow DAG processor (required in Airflow 3.x)
+  # Airflow DAG processor (required in Airflow 3.x — parses DAG files)
   # -------------------------------------------------------------------------
   airflow-dag-processor:
     <<: *airflow-common
     command: dag-processor
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "DagProcessorJob", "--local"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # -------------------------------------------------------------------------
+  # Airflow triggerer (required in Airflow 3.x — handles deferrable operators)
+  # -------------------------------------------------------------------------
+  airflow-triggerer:
+    <<: *airflow-common
+    command: triggerer
+    healthcheck:
+      test: ["CMD", "airflow", "jobs", "check", "--job-type", "TriggererJob", "--local"]
       interval: 30s
       timeout: 10s
       retries: 5

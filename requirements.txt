@@ -1,9 +1,11 @@
 # -----------------------------------------------------------------------
 # Core runtime
 # -----------------------------------------------------------------------
+# NOTE: apache-airflow is NOT listed here — it is already in the base image.
+# Adding it would cause dependency conflicts.
 
-# Apache Airflow — keep the constraint file in sync with this version
-apache-airflow==3.1.7
+# FAB auth manager — required by Airflow 3.x for user authentication
+apache-airflow-providers-fab
 
 # DuckDB — embedded OLAP database used as the single source of truth
 duckdb==1.2.2
@@ -14,15 +16,12 @@ PyGithub==2.5.0
 # HTTP client used directly for streaming repo archives
 requests==2.32.4
 
+# Load environment variables from .env file
+python-dotenv==1.0.1
+
 # -----------------------------------------------------------------------
 # Utilities
 # -----------------------------------------------------------------------
 
 # Retry decorator used in GitHub / Designite wrappers
 tenacity==9.1.2
-
-# -----------------------------------------------------------------------
-# Dev / test (not installed in production image)
-# -----------------------------------------------------------------------
-# pytest==8.3.5
-# pytest-cov==6.1.0

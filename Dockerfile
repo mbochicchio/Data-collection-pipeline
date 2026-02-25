@@ -1,13 +1,12 @@
 # ---------------------------------------------------------------------------
-# GitHub Empirical Studies Pipeline — Airflow image
+# Data-collection-pipeline — Airflow 3.x image
 #
-# Build:  docker build -t github-pipeline:latest .
+# Build:  docker compose build
 # ---------------------------------------------------------------------------
 
-# Pin to the same Airflow version used in requirements.txt
-FROM apache/airflow:3.1.7-python3.11
+FROM apache/airflow:3.1.7
 
-# Switch to root for system-level installs, then drop back to airflow user
+# Switch to root for system-level installs
 USER root
 
 # ---------------------------------------------------------------------------
@@ -19,19 +18,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         default-jre-headless \
         # Git is required to clone repositories
         git \
-        # curl/wget used in health-checks and optional downloads
+        # curl used in healthchecks
         curl \
     && rm -rf /var/lib/apt/lists/*
 
 # ---------------------------------------------------------------------------
-# Designite tool installation
+# Designite tool directory
 # ---------------------------------------------------------------------------
 
-# Create a dedicated directory for Designite binaries.
-# Mount or COPY the actual .jar / .py files here at build time or via volume.
 RUN mkdir -p /opt/designite
-# COPY tools/DesigniteJava.jar  /opt/designite/DesigniteJava.jar
-# COPY tools/DesigniteP.py      /opt/designite/DesigniteP.py
+# Mount actual binaries via docker-compose volume:
+#   - ./tools/DesigniteJava.jar  → /opt/designite/DesigniteJava.jar
+#   - ./tools/DesigniteP.py      → /opt/designite/DesigniteP.py
 
 # ---------------------------------------------------------------------------
 # Python dependencies
@@ -39,26 +37,25 @@ RUN mkdir -p /opt/designite
 
 USER airflow
 
-# Copy only the requirements file first to leverage Docker layer cache
 COPY --chown=airflow:root requirements.txt /opt/airflow/requirements.txt
 
-RUN pip install --no-cache-dir -r /opt/airflow/requirements.txt
+# Use the official Airflow constraint file to avoid dependency conflicts
+RUN pip install --no-cache-dir \
+    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.1.7/constraints-3.11.txt" \
+    -r /opt/airflow/requirements.txt
 
 # ---------------------------------------------------------------------------
 # Application code
 # ---------------------------------------------------------------------------
 
-COPY --chown=airflow:root common /opt/airflow/pipeline/
+COPY --chown=airflow:root . /opt/airflow/pipeline/
 
-# Make the pipeline package importable from DAGs and plugins
 ENV PYTHONPATH="/opt/airflow/pipeline:${PYTHONPATH}"
 
 # ---------------------------------------------------------------------------
 # Data & workspace directories
 # ---------------------------------------------------------------------------
 
-# These are overridden by the Docker Compose volume mounts in production,
-# but we create them so the image works standalone for quick testing.
 RUN mkdir -p /opt/airflow/data /opt/airflow/workspace
 
 ENV DATA_DIR=/opt/airflow/data
