@@ -22,6 +22,14 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://airflow-apiserver:8080/execution/"
+    # Workaround for Airflow 3.1.7 bug — JWT secret must be set explicitly
+    # See: https://github.com/apache/airflow/issues/62026
+    AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW__API_AUTH__JWT_SECRET}
+    # These must be identical across ALL services — read from .env
+    AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
+    AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW__WEBSERVER__SECRET_KEY}
+    # Airflow 3.x uses this for internal JWT token signing between components
+    AIRFLOW__API__AUTH_BACKENDS: "airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session"
     DUCKDB_PATH: /opt/airflow/data/pipeline.duckdb
     DATA_DIR: /opt/airflow/data
     WORKSPACE_DIR: /opt/airflow/workspace
@@ -33,7 +41,7 @@ x-airflow-common: &airflow-common
     - ./plugins:/opt/airflow/pipeline/plugins
     - ./scripts:/opt/airflow/pipeline/scripts
     - ./logs:/opt/airflow/logs
-    - pipeline-data:/opt/airflow/data
+    - ./data:/opt/airflow/data
     - pipeline-workspace:/opt/airflow/workspace
     - ./tools:/opt/designite
   depends_on:
@@ -66,7 +74,7 @@ services:
   # ---------------------------------------------------------------------------
   airflow-init:
     <<: *airflow-common
-    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com && python /opt/airflow/pipeline/scripts/init_db.py"
+    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com"
     restart: "no"
 
   # ---------------------------------------------------------------------------
@@ -125,5 +133,4 @@ services:
 
 volumes:
   postgres-data:
-  pipeline-data:
   pipeline-workspace:

@@ -29,8 +29,8 @@ from __future__ import annotations
 import logging
 from datetime import datetime, timedelta, timezone
 
-from airflow.decorators import dag, task
-from airflow.operators.python import ShortCircuitOperator
+from airflow.sdk import dag, task
+from airflow.providers.standard.operators.python import ShortCircuitOperator
 
 from common.db import get_active_projects
 from config.settings import DUCKDB_PATH, INGESTION_SCHEDULE

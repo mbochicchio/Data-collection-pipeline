@@ -2,27 +2,24 @@
 # Core runtime
 # -----------------------------------------------------------------------
 # NOTE: apache-airflow is NOT listed here — it is already in the base image.
-# Versions of packages that conflict with Airflow constraints are left
-# unpinned so that pip can resolve them automatically.
 
 # FAB auth manager — required by Airflow 3.x for user authentication
 apache-airflow-providers-fab
 
-# DuckDB — embedded OLAP database used as the single source of truth
+# Standard operators (ShortCircuitOperator, PythonOperator, etc.)
+apache-airflow-providers-standard
+
+# DuckDB — embedded OLAP database (not in Airflow constraints, safe to pin)
 duckdb==1.2.2
 
-# GitHub REST API client — version managed by Airflow constraint file
+# GitHub REST API client
 PyGithub
 
-# HTTP client used directly for streaming repo archives
+# HTTP client
 requests
 
 # Load environment variables from .env file
 python-dotenv
 
-# -----------------------------------------------------------------------
-# Utilities
-# -----------------------------------------------------------------------
-
-# Retry decorator used in GitHub / Designite wrappers
+# Retry decorator
 tenacity
