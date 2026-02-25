@@ -41,7 +41,7 @@ COPY --chown=airflow:root requirements.txt /opt/airflow/requirements.txt
 
 # Use the official Airflow constraint file to avoid dependency conflicts
 RUN pip install --no-cache-dir \
-    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.1.7/constraints-3.11.txt" \
+    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.1.7/constraints-3.12.txt" \
     -r /opt/airflow/requirements.txt
 
 # ---------------------------------------------------------------------------

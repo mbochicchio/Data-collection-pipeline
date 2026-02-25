@@ -435,4 +435,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Airflow logs
+logs
+
 # End of https://www.toptal.com/developers/gitignore/api/python,linux,macos,windows,intellij,pycharm

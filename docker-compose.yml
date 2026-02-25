@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
 # Data-collection-pipeline — Docker Compose (local dev)
-# Compatible with Apache Airflow 3.x
+# Compatible with Apache Airflow 3.1.7
 #
 # Usage:
 #   cp .env.example .env          # fill in GITHUB_TOKEN etc.
@@ -16,44 +16,26 @@ x-airflow-common: &airflow-common
   image: github-pipeline:latest
   env_file: .env
   environment:
-    # Airflow core
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__CORE__LOAD_EXAMPLES: "false"
     AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/pipeline/dags
-
-    # Airflow 3.x requires explicit auth manager
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
-
-    # Database
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-
-    # API server (Airflow 3.x — replaces webserver)
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://airflow-apiserver:8080/execution/"
-
-    # Pipeline settings (can also be set in .env)
     DUCKDB_PATH: /opt/airflow/data/pipeline.duckdb
     DATA_DIR: /opt/airflow/data
     WORKSPACE_DIR: /opt/airflow/workspace
     PYTHONPATH: /opt/airflow/pipeline
-
   volumes:
-    # Source code — live-reload without rebuilding the image during development
     - ./dags:/opt/airflow/pipeline/dags
     - ./common:/opt/airflow/pipeline/common
     - ./config:/opt/airflow/pipeline/config
     - ./plugins:/opt/airflow/pipeline/plugins
     - ./scripts:/opt/airflow/pipeline/scripts
     - ./logs:/opt/airflow/logs
-
-    # Persistent data — DuckDB file survives container restarts
     - pipeline-data:/opt/airflow/data
-
-    # Workspace — cloned repos and Designite output (can be large)
     - pipeline-workspace:/opt/airflow/workspace
-
-    # Designite binaries — place DesigniteJava.jar and DesigniteP.py here
     - ./tools:/opt/designite
-
   depends_on:
     postgres:
       condition: service_healthy
@@ -61,9 +43,9 @@ x-airflow-common: &airflow-common
 
 services:
 
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
   # PostgreSQL — Airflow metadata database
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine
     environment:
@@ -79,28 +61,17 @@ services:
       start_period: 5s
     restart: unless-stopped
 
-  # -------------------------------------------------------------------------
-  # Airflow initialisation (runs once, then exits)
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # Airflow initialisation — runs once then exits
+  # ---------------------------------------------------------------------------
   airflow-init:
     <<: *airflow-common
-    command: >
-      bash -c "
-        airflow db migrate &&
-        airflow users create
-          --username admin
-          --password admin
-          --firstname Admin
-          --lastname User
-          --role Admin
-          --email admin@example.com &&
-        python /opt/airflow/pipeline/scripts/init_db.py
-      "
+    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com && python /opt/airflow/pipeline/scripts/init_db.py"
     restart: "no"
 
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
   # Airflow API server (replaces "webserver" in Airflow 3.x)
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
   airflow-apiserver:
     <<: *airflow-common
     command: api-server
@@ -113,9 +84,9 @@ services:
       retries: 5
       start_period: 60s
 
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
   # Airflow scheduler
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
@@ -126,9 +97,9 @@ services:
       retries: 5
       start_period: 30s
 
-  # -------------------------------------------------------------------------
-  # Airflow DAG processor (required in Airflow 3.x — parses DAG files)
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # Airflow DAG processor (required in Airflow 3.x)
+  # ---------------------------------------------------------------------------
   airflow-dag-processor:
     <<: *airflow-common
     command: dag-processor
@@ -139,9 +110,9 @@ services:
       retries: 5
       start_period: 30s
 
-  # -------------------------------------------------------------------------
-  # Airflow triggerer (required in Airflow 3.x — handles deferrable operators)
-  # -------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # Airflow triggerer (required in Airflow 3.x)
+  # ---------------------------------------------------------------------------
   airflow-triggerer:
     <<: *airflow-common
     command: triggerer
