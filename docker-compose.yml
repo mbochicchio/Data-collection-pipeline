@@ -1,0 +1,121 @@
+# ---------------------------------------------------------------------------
+# GitHub Empirical Studies Pipeline — Docker Compose (local dev)
+#
+# Usage:
+#   cp .env.example .env # fill in GITHUB_TOKEN etc.
+#   docker compose up airflow-init
+#   docker compose up -d
+#   open http://localhost:8080 # Airflow UI  (admin / admin)
+# ---------------------------------------------------------------------------
+
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: github-pipeline:latest
+  env_file: .env
+  environment:
+    # Airflow core
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/pipeline/dags
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+
+    # Pipeline settings (can also be set in .env)
+    DUCKDB_PATH: /opt/airflow/data/pipeline.duckdb
+    DATA_DIR: /opt/airflow/data
+    WORKSPACE_DIR: /opt/airflow/workspace
+    PYTHONPATH: /opt/airflow/pipeline
+  volumes:
+    # Source code — live-reload without rebuilding the image during development
+    - ./dags:/opt/airflow/pipeline/dags
+    - ./common:/opt/airflow/pipeline/common
+    - ./config:/opt/airflow/pipeline/config
+    - ./plugins:/opt/airflow/pipeline/plugins
+    - ./scripts:/opt/airflow/pipeline/scripts
+
+    # Persistent data — DuckDB file survives container restarts
+    - pipeline-data:/opt/airflow/data
+
+    # Workspace — cloned repos and Designite output (can be large)
+    - pipeline-workspace:/opt/airflow/workspace
+
+    # Designite binaries — place DesigniteJava.jar and DesigniteP.py here
+    - ./tools:/opt/designite
+
+  depends_on:
+    postgres:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+
+  # -------------------------------------------------------------------------
+  # PostgreSQL — Airflow metadata database
+  # -------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  # -------------------------------------------------------------------------
+  # Airflow initialisation (runs once, then exits)
+  # -------------------------------------------------------------------------
+  airflow-init:
+    <<: *airflow-common
+    command: >
+      bash -c "
+        airflow db migrate &&
+        airflow users create
+          --username admin
+          --password admin
+          --firstname Admin
+          --lastname User
+          --role Admin
+          --email admin@example.com &&
+        python /opt/airflow/pipeline/scripts/init_db.py
+      "
+    restart: "no"
+
+  # -------------------------------------------------------------------------
+  # Airflow webserver
+  # -------------------------------------------------------------------------
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # -------------------------------------------------------------------------
+  # Airflow scheduler
+  # -------------------------------------------------------------------------
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    healthcheck:
+      test: ["CMD", "airflow", "jobs", "check", "--job-type", "SchedulerJob", "--local"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres-data:
+  pipeline-data:
+  pipeline-workspace:
