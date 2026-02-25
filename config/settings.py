@@ -8,6 +8,9 @@ Sensitive values (tokens, paths) must be provided via environment or .env file.
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # ---------------------------------------------------------------------------
 # Base paths
 # ---------------------------------------------------------------------------
