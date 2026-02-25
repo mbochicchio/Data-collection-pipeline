@@ -1,5 +1,5 @@
 """
-Central configuration for the Data Pipeline.
+Central configuration for the GitHub Empirical Studies Pipeline.
 
 All settings are loaded from environment variables with sensible defaults.
 Sensitive values (tokens, paths) must be provided via environment or .env file.
@@ -8,9 +8,6 @@ Sensitive values (tokens, paths) must be provided via environment or .env file.
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
-load_dotenv()
-
 # ---------------------------------------------------------------------------
 # Base paths
 # ---------------------------------------------------------------------------
@@ -18,7 +15,7 @@ load_dotenv()
 # Root directory of the project (one level above config/)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Directory where the DuckDB database file is stored (mounted volume in Docker)
+# Directory where DuckDB database file is stored (mounted volume in Docker)
 DATA_DIR = Path(os.getenv("DATA_DIR", BASE_DIR / "data"))
 
 # Directory used as working space for cloning repos and running tools
@@ -58,16 +55,14 @@ DESIGNITE_JAVA_JAR = Path(os.getenv("DESIGNITE_JAVA_JAR", "/opt/designite/Design
 JAVA_EXECUTABLE = os.getenv("JAVA_EXECUTABLE", "java")
 
 # ---------------------------------------------------------------------------
-# Designite — Python edition
+# Designite — Python edition (DPy)
 # ---------------------------------------------------------------------------
 
-# Absolute path to the DesigniteP.py entry-point script
-DESIGNITE_PYTHON_SCRIPT = Path(
-    os.getenv("DESIGNITE_PYTHON_SCRIPT", "/opt/designite/DesigniteP.py")
+# Absolute path to the DPy executable inside the container
+# Usage: ./DPy analyze -i <input_folder> -o <output_folder>
+DESIGNITE_PYTHON_EXECUTABLE = Path(
+    os.getenv("DESIGNITE_PYTHON_EXECUTABLE", "/opt/designite/DPy")
 )
-
-# Python executable used to run DesigniteP.py (e.g. "python3")
-PYTHON_EXECUTABLE = os.getenv("DESIGNITE_PYTHON_EXECUTABLE", "python3")
 
 # ---------------------------------------------------------------------------
 # Airflow DAG defaults

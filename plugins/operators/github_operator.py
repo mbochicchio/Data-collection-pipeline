@@ -16,7 +16,7 @@ import logging
 from datetime import datetime, timezone
 from pathlib import Path
 
-from airflow.models import BaseOperator
+from airflow.sdk import BaseOperator
 
 from common.db import (
     get_active_projects,
