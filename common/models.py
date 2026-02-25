@@ -68,7 +68,7 @@ class Project:
     repo_name: str
     language: ProjectLanguage = ProjectLanguage.UNKNOWN
     is_active: bool = True
-    added_at: datetime = field(default_factory=datetime.now(timezone.utc))
+    added_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     id: int | None = None   # auto-assigned by DuckDB SEQUENCE
 
     @classmethod
