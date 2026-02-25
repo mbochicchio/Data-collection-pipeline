@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------------------
 
 # Pin to the same Airflow version used in requirements.txt
-FROM apache/airflow:2.10.5-python3.11
+FROM apache/airflow:3.1.7-python3.11
 
 # Switch to root for system-level installs, then drop back to airflow user
 USER root

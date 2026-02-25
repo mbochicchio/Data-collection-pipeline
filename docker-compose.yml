@@ -1,11 +1,13 @@
 # ---------------------------------------------------------------------------
-# GitHub Empirical Studies Pipeline — Docker Compose (local dev)
+# Data-collection-pipeline — Docker Compose (local dev)
 #
 # Usage:
-#   cp .env.example .env # fill in GITHUB_TOKEN etc.
+#   cp .env.example .env          # fill in GITHUB_TOKEN etc.
 #   docker compose up airflow-init
 #   docker compose up -d
-#   open http://localhost:8080 # Airflow UI  (admin / admin)
+#   open http://localhost:8080     # Airflow UI  (admin / admin)
+#
+# NOTE: Uses Airflow 3.x — the webserver is now called "api-server"
 # ---------------------------------------------------------------------------
 
 x-airflow-common: &airflow-common
@@ -88,11 +90,11 @@ services:
     restart: "no"
 
   # -------------------------------------------------------------------------
-  # Airflow webserver
+  # Airflow API server (replaces "webserver" in Airflow 3.x)
   # -------------------------------------------------------------------------
-  airflow-webserver:
+  airflow-apiserver:
     <<: *airflow-common
-    command: webserver
+    command: api-server
     ports:
       - "8080:8080"
     healthcheck:
@@ -110,6 +112,19 @@ services:
     command: scheduler
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "SchedulerJob", "--local"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # -------------------------------------------------------------------------
+  # Airflow DAG processor (required in Airflow 3.x)
+  # -------------------------------------------------------------------------
+  airflow-dag-processor:
+    <<: *airflow-common
+    command: dag-processor
+    healthcheck:
+      test: ["CMD", "airflow", "jobs", "check", "--job-type", "DagProcessorJob", "--local"]
       interval: 30s
       timeout: 10s
       retries: 5
