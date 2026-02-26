@@ -15,7 +15,7 @@ from pathlib import Path
 # Root directory of the project (one level above config/)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Directory where DuckDB database file is stored (mounted volume in Docker)
+# Directory where the DuckDB database file is stored (mounted volume in Docker)
 DATA_DIR = Path(os.getenv("DATA_DIR", BASE_DIR / "data"))
 
 # Directory used as working space for cloning repos and running tools
@@ -32,8 +32,13 @@ DUCKDB_PATH = Path(os.getenv("DUCKDB_PATH", DATA_DIR / "pipeline.duckdb"))
 # GitHub API
 # ---------------------------------------------------------------------------
 
-# Personal Access Token for GitHub REST API (required to avoid rate limits)
+# Single Personal Access Token (backward-compatible)
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+
+# Multiple tokens for rotation — comma-separated, takes precedence over GITHUB_TOKEN
+# Example: GITHUB_TOKENS=ghp_abc123,ghp_def456,ghp_ghi789
+# With 3 tokens you get 15,000 requests/hour — enough for 6000+ projects per run
+GITHUB_TOKENS = os.getenv("GITHUB_TOKENS", "")
 
 # GitHub API base URL (can be overridden for GitHub Enterprise)
 GITHUB_API_BASE = os.getenv("GITHUB_API_BASE", "https://api.github.com")

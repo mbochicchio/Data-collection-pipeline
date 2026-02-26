@@ -2,11 +2,24 @@
 GitHub REST API client for the Data-collection-pipeline.
 
 Responsibilities:
-- Authenticate with a Personal Access Token
+- Authenticate with one or more Personal Access Tokens
+- Rotate tokens automatically when the rate limit is reached
 - Fetch repository metadata (language, default branch, etc.)
 - Fetch the latest commit on the default branch
-- Handle rate limiting gracefully (wait and retry)
 - Retry on transient network / server errors with exponential backoff
+
+Token configuration
+-------------------
+Set one or more tokens in the environment:
+
+    # Single token (backward compatible)
+    GITHUB_TOKEN=ghp_abc123
+
+    # Multiple tokens — comma-separated (recommended for large datasets)
+    GITHUB_TOKENS=ghp_abc123,ghp_def456,ghp_ghi789
+
+If both are set, GITHUB_TOKENS takes precedence.
+If neither is set, requests are unauthenticated (60 req/hour — avoid this).
 
 This module has no Airflow dependency and can be used standalone or in tests.
 """
@@ -28,6 +41,7 @@ from config.settings import (
     GITHUB_API_MAX_RETRIES,
     GITHUB_API_RETRY_BACKOFF,
     GITHUB_TOKEN,
+    GITHUB_TOKENS,
 )
 
 logger = logging.getLogger(__name__)
@@ -40,17 +54,10 @@ logger = logging.getLogger(__name__)
 
 @dataclass(frozen=True)
 class RepoMetadata:
-    """
-    Relevant fields from the GitHub repository API response.
-
-    Only fields used by the pipeline are included; the full raw response
-    is stored in ``extra`` for forward compatibility.
-    """
-
     full_name: str
     owner: str
     repo_name: str
-    language: str | None          # Primary language as reported by GitHub
+    language: str | None
     default_branch: str
     description: str | None
     is_fork: bool
@@ -60,20 +67,80 @@ class RepoMetadata:
     open_issues: int
     created_at: datetime
     updated_at: datetime
-    extra: dict[str, Any]         # Full raw API response for archival
+    extra: dict[str, Any]
 
 
 @dataclass(frozen=True)
 class CommitInfo:
-    """
-    The fields from a GitHub commit object that the pipeline needs.
-    """
-
-    sha: str                      # Full 40-character commit SHA
-    message: str                  # First line of the commit message
-    committed_at: datetime        # Committer date (UTC)
+    sha: str
+    message: str
+    committed_at: datetime
     author_name: str
     author_email: str
+
+
+# ---------------------------------------------------------------------------
+# Token pool
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class _TokenState:
+    """Tracks rate-limit state for a single GitHub token."""
+    token: str
+    remaining: int = 5000
+    reset_at: int = 0
+
+    @property
+    def is_exhausted(self) -> bool:
+        return self.remaining == 0 and int(time.time()) < self.reset_at
+
+    @property
+    def seconds_until_reset(self) -> int:
+        return max(self.reset_at - int(time.time()), 0) + 5
+
+
+class _TokenPool:
+    """
+    Manages a pool of GitHub tokens and selects the best available one.
+
+    Selection strategy:
+    - Pick the token with the highest remaining quota.
+    - If all tokens are exhausted, wait for the one that resets soonest.
+    """
+
+    def __init__(self, tokens: list[str]) -> None:
+        if not tokens:
+            raise ValueError("At least one GitHub token must be provided.")
+        self._pool = [_TokenState(token=t) for t in tokens]
+        logger.info("Token pool initialised with %d token(s).", len(self._pool))
+
+    @property
+    def current(self) -> _TokenState:
+        available = [t for t in self._pool if not t.is_exhausted]
+        if available:
+            return max(available, key=lambda t: t.remaining)
+        soonest = min(self._pool, key=lambda t: t.reset_at)
+        wait = soonest.seconds_until_reset
+        logger.warning(
+            "All %d GitHub token(s) exhausted. Waiting %d seconds for reset.",
+            len(self._pool), wait,
+        )
+        time.sleep(wait)
+        soonest.remaining = 5000
+        return soonest
+
+    def update(self, token: str, remaining: int, reset_at: int) -> None:
+        for state in self._pool:
+            if state.token == token:
+                state.remaining = remaining
+                state.reset_at = reset_at
+                if remaining < 100:
+                    logger.warning(
+                        "Token ...%s is running low: %d requests remaining.",
+                        token[-4:], remaining,
+                    )
+                return
 
 
 # ---------------------------------------------------------------------------
@@ -83,7 +150,7 @@ class CommitInfo:
 
 class GitHubClient:
     """
-    Thin wrapper around the GitHub REST API v3.
+    Thin wrapper around the GitHub REST API v3 with multi-token rotation.
 
     Instantiate once per Airflow task; it is not thread-safe.
 
@@ -96,39 +163,29 @@ class GitHubClient:
 
     def __init__(
         self,
-        token: str = GITHUB_TOKEN,
+        tokens: list[str] | None = None,
         api_base: str = GITHUB_API_BASE,
         max_retries: int = GITHUB_API_MAX_RETRIES,
         retry_backoff: float = GITHUB_API_RETRY_BACKOFF,
     ) -> None:
+        if tokens is None:
+            tokens = self._resolve_tokens()
+        self._pool = _TokenPool(tokens)
         self._api_base = api_base.rstrip("/")
-        self._session = self._build_session(token, max_retries, retry_backoff)
+        self._session = self._build_session(max_retries, retry_backoff)
 
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
 
     def get_repo_metadata(self, full_name: str) -> RepoMetadata:
-        """
-        Fetch repository-level metadata from the GitHub API.
-
-        Args:
-            full_name: Repository identifier in the form ``owner/repo_name``.
-
-        Returns:
-            A :class:`RepoMetadata` dataclass populated from the API response.
-
-        Raises:
-            requests.HTTPError: On non-retryable HTTP errors (e.g. 404).
-        """
         url = f"{self._api_base}/repos/{full_name}"
         data = self._get(url)
-
         return RepoMetadata(
             full_name=data["full_name"],
             owner=data["owner"]["login"],
             repo_name=data["name"],
-            language=data.get("language"),          # None if GitHub cannot detect it
+            language=data.get("language"),
             default_branch=data["default_branch"],
             description=data.get("description"),
             is_fork=data.get("fork", False),
@@ -142,31 +199,13 @@ class GitHubClient:
         )
 
     def get_latest_commit(self, branch: str, owner: str, repo_name: str) -> CommitInfo:
-        """
-        Fetch the HEAD commit of *branch* for the given repository.
-
-        Args:
-            branch:    Branch name (typically ``default_branch`` from :meth:`get_repo_metadata`).
-            owner:     Repository owner login.
-            repo_name: Repository name.
-
-        Returns:
-            A :class:`CommitInfo` dataclass for the HEAD commit.
-
-        Raises:
-            requests.HTTPError: On non-retryable HTTP errors.
-        """
         url = f"{self._api_base}/repos/{owner}/{repo_name}/commits/{branch}"
         data = self._get(url)
-
         commit = data["commit"]
-        # Use committer date as the canonical timestamp (matches git log default)
-        committed_at_raw = commit["committer"]["date"]
-
         return CommitInfo(
             sha=data["sha"],
-            message=commit["message"].splitlines()[0],  # first line only
-            committed_at=self._parse_dt(committed_at_raw),
+            message=commit["message"].splitlines()[0],
+            committed_at=self._parse_dt(commit["committer"]["date"]),
             author_name=commit["author"]["name"],
             author_email=commit["author"]["email"],
         )
@@ -177,49 +216,54 @@ class GitHubClient:
 
     def _get(self, url: str, params: dict | None = None) -> dict:
         """
-        Perform a GET request, handle rate limiting, and return parsed JSON.
-
-        GitHub rate-limit headers are inspected on every response.
-        If the remaining quota is zero the method sleeps until the reset time
-        before retrying (instead of burning retries on 403/429 responses).
+        Perform a GET request using the best available token.
+        Rotates to the next token on 403/429 and retries.
         """
-        logger.debug("GET %s", url)
-        response = self._session.get(url, params=params)
+        num_tokens = len(self._pool._pool)
+        for attempt in range(num_tokens + 1):
+            token_state = self._pool.current
+            self._session.headers["Authorization"] = f"Bearer {token_state.token}"
 
-        # Primary rate limit: X-RateLimit-Remaining hits 0
-        if response.status_code in (403, 429):
-            reset_ts = int(response.headers.get("X-RateLimit-Reset", 0))
-            if reset_ts:
-                wait = max(reset_ts - int(time.time()), 0) + 5  # +5s buffer
+            logger.debug("GET %s (token ...%s)", url, token_state.token[-4:])
+            response = self._session.get(url, params=params)
+
+            remaining = int(response.headers.get("X-RateLimit-Remaining", token_state.remaining))
+            reset_at = int(response.headers.get("X-RateLimit-Reset", token_state.reset_at))
+            self._pool.update(token_state.token, remaining, reset_at)
+
+            if response.status_code in (403, 429):
                 logger.warning(
-                    "GitHub rate limit reached. Sleeping %s seconds until reset.", wait
+                    "Token ...%s hit rate limit. Switching token (attempt %d/%d).",
+                    token_state.token[-4:], attempt + 1, num_tokens,
                 )
-                time.sleep(wait)
-                response = self._session.get(url, params=params)
+                self._pool.update(token_state.token, 0, reset_at)
+                continue
 
-        response.raise_for_status()
-        return response.json()
+            response.raise_for_status()
+            return response.json()
+
+        raise RuntimeError(f"All tokens exhausted after {num_tokens} attempts for {url}")
 
     @staticmethod
-    def _build_session(token: str, max_retries: int, backoff: float) -> requests.Session:
-        """
-        Build a requests Session with auth headers and an automatic retry policy.
+    def _resolve_tokens() -> list[str]:
+        multi = GITHUB_TOKENS
+        if multi:
+            tokens = [t.strip() for t in multi.split(",") if t.strip()]
+            if tokens:
+                logger.info("Loaded %d token(s) from GITHUB_TOKENS.", len(tokens))
+                return tokens
+        single = GITHUB_TOKEN
+        if single:
+            logger.info("Loaded 1 token from GITHUB_TOKEN.")
+            return [single]
+        logger.warning("No GitHub token configured. Heavily rate-limited (60/hour).")
+        return [""]
 
-        Retries are attempted on connection errors and 5xx responses.
-        403/429 (rate limit) are handled separately in :meth:`_get`.
-        """
+    @staticmethod
+    def _build_session(max_retries: int, backoff: float) -> requests.Session:
         session = requests.Session()
-
-        if token:
-            session.headers["Authorization"] = f"Bearer {token}"
-        else:
-            logger.warning(
-                "No GITHUB_TOKEN configured. API requests will be heavily rate-limited."
-            )
-
         session.headers["Accept"] = "application/vnd.github+json"
         session.headers["X-GitHub-Api-Version"] = "2022-11-28"
-
         retry_policy = Retry(
             total=max_retries,
             backoff_factor=backoff,
@@ -230,10 +274,8 @@ class GitHubClient:
         adapter = HTTPAdapter(max_retries=retry_policy)
         session.mount("https://", adapter)
         session.mount("http://", adapter)
-
         return session
 
     @staticmethod
     def _parse_dt(value: str) -> datetime:
-        """Parse an ISO-8601 datetime string from the GitHub API into a UTC datetime."""
         return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
