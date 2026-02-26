@@ -77,16 +77,7 @@ services:
   # ---------------------------------------------------------------------------
   airflow-init:
     <<: *airflow-common
-    command: >
-      bash -c "
-        airflow db migrate &&
-        airflow users create
-          --username admin --password admin
-          --firstname Admin --lastname User
-          --role Admin --email admin@example.com &&
-        python /opt/airflow/pipeline/scripts/init_db.py --seed /opt/airflow/pipeline/data/repo_urls.txt &&
-        touch /opt/airflow/data/.init_done
-      "
+    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com && python /opt/airflow/pipeline/scripts/init_db.py --seed /opt/airflow/pipeline/data/repo_urls.txt && touch /opt/airflow/data/.init_done"
     healthcheck:
       test: ["CMD", "test", "-f", "/opt/airflow/data/.init_done"]
       interval: 10s
