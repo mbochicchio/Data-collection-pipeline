@@ -50,6 +50,14 @@ GITHUB_API_MAX_RETRIES = int(os.getenv("GITHUB_API_MAX_RETRIES", "5"))
 GITHUB_API_RETRY_BACKOFF = float(os.getenv("GITHUB_API_RETRY_BACKOFF", "2.0"))
 
 # ---------------------------------------------------------------------------
+# RepoQuester
+# ---------------------------------------------------------------------------
+
+# Path to the RepoQuester installation directory inside the container.
+# Mount the tools/Repoquester folder to /opt/repoquester in docker-compose.
+REPOQUESTER_DIR = Path(os.getenv("REPOQUESTER_DIR", "/opt/repoquester"))
+
+# ---------------------------------------------------------------------------
 # Designite — Java edition
 # ---------------------------------------------------------------------------
 

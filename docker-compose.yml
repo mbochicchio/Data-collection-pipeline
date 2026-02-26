@@ -43,7 +43,8 @@ x-airflow-common: &airflow-common
     - ./logs:/opt/airflow/logs
     - ./data:/opt/airflow/data
     - pipeline-workspace:/opt/airflow/workspace
-    - ./tools:/opt/designite
+    - ./tools/Designite:/opt/designite
+    - ./tools/Repoquester:/opt/repoquester
   depends_on:
     postgres:
       condition: service_healthy
@@ -74,7 +75,7 @@ services:
   # ---------------------------------------------------------------------------
   airflow-init:
     <<: *airflow-common
-    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com"
+    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com && python /opt/airflow/pipeline/scripts/init_db.py --seed /opt/airflow/pipeline/data/repo_urls.txt"
     restart: "no"
 
   # ---------------------------------------------------------------------------

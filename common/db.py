@@ -113,18 +113,7 @@ CREATE TABLE IF NOT EXISTS analyses (
 """
 
 
-def init_schema(db_path: Path = DUCKDB_PATH) -> None:
-    """
-    Create all tables and sequences if they do not already exist.
 
-    Safe to call on every startup — all statements use IF NOT EXISTS.
-    """
-    logger.info("Initialising database schema at %s", db_path)
-    with get_connection(db_path) as conn:
-        conn.execute(DDL_PROJECTS)
-        conn.execute(DDL_VERSIONS)
-        conn.execute(DDL_ANALYSES)
-    logger.info("Schema initialisation complete.")
 
 
 # ---------------------------------------------------------------------------
@@ -359,3 +348,157 @@ def analysis_exists_for_version(version_id: int, db_path: Path = DUCKDB_PATH) ->
         )
         row = conn.fetchone()
     return row[0] > 0
+
+
+# ---------------------------------------------------------------------------
+# Quality gate DDL
+# ---------------------------------------------------------------------------
+
+DDL_QUALITY_GATES = """
+CREATE SEQUENCE IF NOT EXISTS seq_quality_gates_id START 1;
+
+CREATE TABLE IF NOT EXISTS quality_gates (
+    id                      INTEGER PRIMARY KEY DEFAULT nextval('seq_quality_gates_id'),
+    project_id              INTEGER NOT NULL REFERENCES projects(id),
+    run_at                  TIMESTAMP NOT NULL,
+
+    -- RepoQuester metric scores (0 or 1 each)
+    community               DOUBLE,
+    continuous_integration  DOUBLE,
+    documentation           DOUBLE,
+    history                 DOUBLE,
+    management              DOUBLE,
+    license                 DOUBLE,
+    unit_test               DOUBLE,
+    pull                    DOUBLE,
+    releases                DOUBLE,
+
+    -- Derived fields
+    score                   INTEGER NOT NULL,   -- how many metrics > 0
+    passed                  BOOLEAN NOT NULL,   -- score >= 5
+
+    -- One quality gate record per project (re-runs replace the existing row)
+    UNIQUE (project_id)
+);
+"""
+
+
+# ---------------------------------------------------------------------------
+# Quality gate operations
+# ---------------------------------------------------------------------------
+
+
+def init_schema(db_path: Path = DUCKDB_PATH) -> None:
+    """
+    Create all tables and sequences if they do not already exist.
+
+    Safe to call on every startup — all statements use IF NOT EXISTS.
+    """
+    logger.info("Initialising database schema at %s", db_path)
+    with get_connection(db_path) as conn:
+        conn.execute(DDL_PROJECTS)
+        conn.execute(DDL_VERSIONS)
+        conn.execute(DDL_ANALYSES)
+        conn.execute(DDL_QUALITY_GATES)
+    logger.info("Schema initialisation complete.")
+
+
+def get_projects_without_quality_gate(db_path: Path = DUCKDB_PATH) -> list:
+    """Return active projects that have never been evaluated by RepoQuester."""
+    with get_connection(db_path) as conn:
+        conn.execute(
+            """
+            SELECT p.id, p.full_name
+            FROM projects p
+            LEFT JOIN quality_gates qg ON qg.project_id = p.id
+            WHERE p.is_active = TRUE
+              AND qg.id IS NULL
+            ORDER BY p.full_name
+            """
+        )
+        rows = conn.fetchall()
+    return [{"id": r[0], "full_name": r[1]} for r in rows]
+
+
+def upsert_quality_gate(
+    project_id: int,
+    metrics: dict,
+    db_path: Path = DUCKDB_PATH,
+) -> None:
+    """
+    Insert or replace a quality gate result for a project.
+
+    ``metrics`` must be a dict with keys matching the 9 RepoQuester columns:
+    community, continuous_integration, documentation, history, management,
+    license, unit_test, pull, releases.
+    """
+    metric_keys = [
+        "community", "continuous_integration", "documentation",
+        "history", "management", "license", "unit_test", "pull", "releases",
+    ]
+    score = sum(1 for k in metric_keys if (metrics.get(k) or 0) > 0)
+    passed = score >= 5
+    run_at = datetime.now(timezone.utc)
+
+    with get_connection(db_path) as conn:
+        conn.execute(
+            """
+            INSERT INTO quality_gates (
+                project_id, run_at,
+                community, continuous_integration, documentation,
+                history, management, license, unit_test, pull, releases,
+                score, passed
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT (project_id) DO UPDATE SET
+                run_at                 = excluded.run_at,
+                community              = excluded.community,
+                continuous_integration = excluded.continuous_integration,
+                documentation          = excluded.documentation,
+                history                = excluded.history,
+                management             = excluded.management,
+                license                = excluded.license,
+                unit_test              = excluded.unit_test,
+                pull                   = excluded.pull,
+                releases               = excluded.releases,
+                score                  = excluded.score,
+                passed                 = excluded.passed
+            """,
+            [
+                project_id, run_at,
+                metrics.get("community"),
+                metrics.get("continuous_integration"),
+                metrics.get("documentation"),
+                metrics.get("history"),
+                metrics.get("management"),
+                metrics.get("license"),
+                metrics.get("unit_test"),
+                metrics.get("pull"),
+                metrics.get("releases"),
+                score,
+                passed,
+            ],
+        )
+    logger.debug(
+        "Quality gate saved for project_id=%s — score=%d, passed=%s",
+        project_id, score, passed,
+    )
+
+
+def project_passed_quality_gate(project_id: int, db_path: Path = DUCKDB_PATH) -> bool | None:
+    """
+    Check if a project has passed the quality gate.
+
+    Returns:
+        True  — project passed (score >= 5)
+        False — project failed
+        None  — quality gate not yet run for this project
+    """
+    with get_connection(db_path) as conn:
+        conn.execute(
+            "SELECT passed FROM quality_gates WHERE project_id = ?",
+            [project_id],
+        )
+        row = conn.fetchone()
+    if row is None:
+        return None
+    return bool(row[0])
