@@ -438,4 +438,8 @@ $RECYCLE.BIN/
 # Airflow logs
 logs
 
+# Repoquester tool
+tools/Repoquester
+
+
 # End of https://www.toptal.com/developers/gitignore/api/python,linux,macos,windows,intellij,pycharm
