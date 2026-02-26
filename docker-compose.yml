@@ -41,7 +41,8 @@ x-airflow-common: &airflow-common
     - ./plugins:/opt/airflow/pipeline/plugins
     - ./scripts:/opt/airflow/pipeline/scripts
     - ./logs:/opt/airflow/logs
-    - ./data:/opt/airflow/data
+    - pipeline-data:/opt/airflow/data
+    - ./data/repo_urls.txt:/opt/airflow/pipeline/data/repo_urls.txt:ro
     - pipeline-workspace:/opt/airflow/workspace
     - ./tools/Designite:/opt/designite
     - ./tools/Repoquester:/opt/repoquester
@@ -97,8 +98,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      airflow-init:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 30s
@@ -114,8 +113,6 @@ services:
     command: scheduler
     depends_on:
       postgres:
-        condition: service_healthy
-      airflow-init:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "SchedulerJob", "--local"]
@@ -133,8 +130,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      airflow-init:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "DagProcessorJob", "--local"]
       interval: 30s
@@ -151,8 +146,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      airflow-init:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "TriggererJob", "--local"]
       interval: 30s
@@ -162,4 +155,5 @@ services:
 
 volumes:
   postgres-data:
+  pipeline-data:
   pipeline-workspace:
