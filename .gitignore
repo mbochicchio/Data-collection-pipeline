@@ -444,5 +444,7 @@ tools/Repoquester
 # Designite tools
 tools/Designite
 
+data/.init_done
+
 
 # End of https://www.toptal.com/developers/gitignore/api/python,linux,macos,windows,intellij,pycharm
