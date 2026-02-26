@@ -441,5 +441,8 @@ logs
 # Repoquester tool
 tools/Repoquester
 
+# Designite tools
+tools/Designite
+
 
 # End of https://www.toptal.com/developers/gitignore/api/python,linux,macos,windows,intellij,pycharm
