@@ -32,25 +32,35 @@ logger = logging.getLogger(__name__)
 
 
 @contextmanager
-def get_connection(db_path: Path = DUCKDB_PATH) -> Generator[duckdb.DuckDBPyConnection, None, None]:
+def get_connection(
+    db_path: Path = DUCKDB_PATH,
+    read_only: bool = False,
+) -> Generator[duckdb.DuckDBPyConnection, None, None]:
     """
     Context manager that yields an open DuckDB connection and closes it on exit.
 
-    Usage::
-
-        with get_connection() as conn:
-            conn.execute("SELECT 1")
+    Parameters
+    ----------
+    db_path : Path
+        Path to the DuckDB database file.
+    read_only : bool
+        If True, open the connection in read-only mode. Multiple read-only
+        connections can coexist without locking conflicts. Use this for
+        all SELECT-only operations in Airflow tasks that run concurrently.
 
     The database file (and any parent directories) are created automatically
-    if they do not exist yet.
+    if they do not exist yet (write mode only).
     """
-    db_path.parent.mkdir(parents=True, exist_ok=True)
-    conn = duckdb.connect(str(db_path))
+    if not read_only:
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+    conn = duckdb.connect(str(db_path), read_only=read_only)
     try:
         yield conn
-        conn.commit()
+        if not read_only:
+            conn.commit()
     except Exception:
-        conn.rollback()
+        if not read_only:
+            conn.rollback()
         raise
     finally:
         conn.close()
@@ -123,7 +133,7 @@ CREATE TABLE IF NOT EXISTS analyses (
 
 def upsert_project(project: Project, db_path: Path = DUCKDB_PATH) -> int:
     """
-    Insert a project row, or update language/is_active if it already exists.
+    Insert a project row or update language/is_active if it already exists.
 
     Returns the project's database id.
     """
@@ -152,7 +162,7 @@ def upsert_project(project: Project, db_path: Path = DUCKDB_PATH) -> int:
 
 def get_active_projects(db_path: Path = DUCKDB_PATH) -> list[Project]:
     """Return all projects where is_active = TRUE, ordered by full_name."""
-    with get_connection(db_path) as conn:
+    with get_connection(db_path, read_only=True) as conn:
         conn.execute(
             """
             SELECT id, full_name, owner, repo_name, language, is_active, added_at
@@ -233,7 +243,7 @@ def get_versions_pending_analysis(db_path: Path = DUCKDB_PATH) -> list[Version]:
 
     These are the candidates for the execution DAG to process.
     """
-    with get_connection(db_path) as conn:
+    with get_connection(db_path, read_only=True) as conn:
         conn.execute(
             """
             SELECT
@@ -336,7 +346,7 @@ def analysis_exists_for_version(version_id: int, db_path: Path = DUCKDB_PATH) ->
 
     PENDING/RUNNING rows are ignored so that crashed tasks can be retried.
     """
-    with get_connection(db_path) as conn:
+    with get_connection(db_path, read_only=True) as conn:
         conn.execute(
             """
             SELECT COUNT(*)
@@ -405,7 +415,7 @@ def init_schema(db_path: Path = DUCKDB_PATH) -> None:
 
 def get_projects_without_quality_gate(db_path: Path = DUCKDB_PATH) -> list:
     """Return active projects that have never been evaluated by RepoQuester."""
-    with get_connection(db_path) as conn:
+    with get_connection(db_path, read_only=True) as conn:
         conn.execute(
             """
             SELECT p.id, p.full_name
@@ -493,7 +503,7 @@ def project_passed_quality_gate(project_id: int, db_path: Path = DUCKDB_PATH) ->
         False — project failed
         None  — quality gate not yet run for this project
     """
-    with get_connection(db_path) as conn:
+    with get_connection(db_path, read_only=True) as conn:
         conn.execute(
             "SELECT passed FROM quality_gates WHERE project_id = ?",
             [project_id],

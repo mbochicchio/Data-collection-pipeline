@@ -72,10 +72,27 @@ services:
 
   # ---------------------------------------------------------------------------
   # Airflow initialisation — runs once then exits
+  # Creates a sentinel file /opt/airflow/data/.init_done on success so that
+  # the other services can wait for it via depends_on condition: service_healthy
   # ---------------------------------------------------------------------------
   airflow-init:
     <<: *airflow-common
-    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com && python /opt/airflow/pipeline/scripts/init_db.py --seed /opt/airflow/pipeline/data/repo_urls.txt"
+    command: >
+      bash -c "
+        airflow db migrate &&
+        airflow users create
+          --username admin --password admin
+          --firstname Admin --lastname User
+          --role Admin --email admin@example.com &&
+        python /opt/airflow/pipeline/scripts/init_db.py --seed /opt/airflow/pipeline/data/repo_urls.txt &&
+        touch /opt/airflow/data/.init_done
+      "
+    healthcheck:
+      test: ["CMD", "test", "-f", "/opt/airflow/data/.init_done"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     restart: "no"
 
   # ---------------------------------------------------------------------------
@@ -86,6 +103,11 @@ services:
     command: api-server
     ports:
       - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 30s
@@ -99,6 +121,11 @@ services:
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "SchedulerJob", "--local"]
       interval: 30s
@@ -112,6 +139,11 @@ services:
   airflow-dag-processor:
     <<: *airflow-common
     command: dag-processor
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "DagProcessorJob", "--local"]
       interval: 30s
@@ -125,6 +157,11 @@ services:
   airflow-triggerer:
     <<: *airflow-common
     command: triggerer
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "TriggererJob", "--local"]
       interval: 30s
