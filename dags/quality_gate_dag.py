@@ -3,7 +3,7 @@ Quality Gate DAG — Data-collection-pipeline
 ============================================
 
 Runs RepoQuester on all active projects that have not yet been evaluated.
-Projects that score >= 5 out of 9 quality dimensions will be eligible
+Projects that score > 5 out of 9 quality dimensions will be eligible
 for Designite static analysis in the execution DAG.
 
 The 9 quality dimensions evaluated by RepoQuester:

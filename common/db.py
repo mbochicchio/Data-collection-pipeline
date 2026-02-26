@@ -437,7 +437,7 @@ def upsert_quality_gate(
         "history", "management", "license", "unit_test", "pull", "releases",
     ]
     score = sum(1 for k in metric_keys if (metrics.get(k) or 0) > 0)
-    passed = score >= 5
+    passed = score > 5
     run_at = datetime.now(timezone.utc)
 
     with get_connection(db_path) as conn:

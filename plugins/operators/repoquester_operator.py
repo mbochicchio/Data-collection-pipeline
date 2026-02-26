@@ -49,17 +49,6 @@ METRIC_COLUMNS = [
 ]
 
 
-def _write_token(work_dir: Path, token: str) -> None:
-    """Inject the GitHub token into RepoQuester's tokens.py."""
-    tokens_path = work_dir / "tokens.py"
-    tokens_path.write_text(
-        f'import os\n'
-        f'root_directory = os.getcwd()\n'
-        f'git_tokens = {{"{token}": "pipeline"}}\n'
-    )
-    logger.debug("GitHub token injected into tokens.py.")
-
-
 def _read_results(work_dir: Path) -> dict[str, dict]:
     """
     Read analysis results from RepoQuester's SQLite database.
@@ -92,6 +81,28 @@ def _read_results(work_dir: Path) -> dict[str, dict]:
 
     logger.info("Read %d result(s) from RepoQuester database.", len(results))
     return results
+
+
+def _write_token(work_dir: Path, token: str) -> None:
+    """Inject the GitHub token into RepoQuester's tokens.py."""
+    tokens_path = work_dir / "tokens.py"
+    tokens_path.write_text(
+        f'import os\n'
+        f'root_directory = os.getcwd()\n'
+        f'git_tokens = {{"{token}": "pipeline"}}\n'
+    )
+    logger.debug("GitHub token injected into tokens.py.")
+
+
+def _write_repo_urls(work_dir: Path, pending: list[dict]) -> None:
+    """Write project names to RepoQuester's repo_urls file."""
+    repo_urls_path = work_dir / "repo_urls"
+    with open(repo_urls_path, "w") as f:
+        for project in pending:
+            f.write(project["full_name"] + "\n")
+    logger.info(
+        "Wrote %d project(s) to %s.", len(pending), repo_urls_path
+    )
 
 
 class RepoQuesterOperator(BaseOperator):
@@ -154,7 +165,7 @@ class RepoQuesterOperator(BaseOperator):
             shutil.copytree(str(self.repoquester_dir), str(work_dir))
 
             try:
-                self._write_repo_urls(work_dir, pending)
+                _write_repo_urls(work_dir, pending)
                 _write_token(work_dir, token)
                 self._run_initialize(work_dir)
                 self._run_analysis(work_dir)
@@ -175,7 +186,7 @@ class RepoQuesterOperator(BaseOperator):
             try:
                 upsert_quality_gate(project_id, metrics, db_path=self.db_path)
                 score = sum(1 for k in METRIC_COLUMNS if (metrics.get(k) or 0) > 0)
-                if score >= 5:
+                if score > 5:
                     summary["passed"] += 1
                 else:
                     summary["failed"] += 1
@@ -194,17 +205,6 @@ class RepoQuesterOperator(BaseOperator):
     # ------------------------------------------------------------------
     # Setup helpers
     # ------------------------------------------------------------------
-
-    @staticmethod
-    def _write_repo_urls(work_dir: Path, pending: list[dict]) -> None:
-        """Write project names to RepoQuester's repo_urls file."""
-        repo_urls_path = work_dir / "repo_urls"
-        with open(repo_urls_path, "w") as f:
-            for project in pending:
-                f.write(project["full_name"] + "\n")
-        logger.info(
-            "Wrote %d project(s) to %s.", len(pending), repo_urls_path
-        )
 
     # ------------------------------------------------------------------
     # Execution helpers
