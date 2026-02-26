@@ -49,6 +49,51 @@ METRIC_COLUMNS = [
 ]
 
 
+def _write_token(work_dir: Path, token: str) -> None:
+    """Inject the GitHub token into RepoQuester's tokens.py."""
+    tokens_path = work_dir / "tokens.py"
+    tokens_path.write_text(
+        f'import os\n'
+        f'root_directory = os.getcwd()\n'
+        f'git_tokens = {{"{token}": "pipeline"}}\n'
+    )
+    logger.debug("GitHub token injected into tokens.py.")
+
+
+def _read_results(work_dir: Path) -> dict[str, dict]:
+    """
+    Read analysis results from RepoQuester's SQLite database.
+
+    Returns a dict mapping full_name → metrics dict.
+    """
+    db_path = work_dir / "repo_quester.db"
+    if not db_path.exists():
+        raise FileNotFoundError(
+            f"RepoQuester did not produce a database at {db_path}. "
+            "Check RepoQuester logs for errors."
+        )
+
+    results = {}
+    conn = sqlite3.connect(str(db_path))
+    conn.row_factory = sqlite3.Row
+    try:
+        cursor = conn.execute(
+            f"""
+            SELECT repository, {', '.join(METRIC_COLUMNS)}
+            FROM repoquester_results
+            """
+        )
+        for row in cursor:
+            full_name = row["repository"]
+            metrics = {col: row[col] for col in METRIC_COLUMNS}
+            results[full_name] = metrics
+    finally:
+        conn.close()
+
+    logger.info("Read %d result(s) from RepoQuester database.", len(results))
+    return results
+
+
 class RepoQuesterOperator(BaseOperator):
     """
     Run RepoQuester on all active projects that have not yet been evaluated.
@@ -110,10 +155,10 @@ class RepoQuesterOperator(BaseOperator):
 
             try:
                 self._write_repo_urls(work_dir, pending)
-                self._write_token(work_dir, token)
+                _write_token(work_dir, token)
                 self._run_initialize(work_dir)
                 self._run_analysis(work_dir)
-                results = self._read_results(work_dir)
+                results = _read_results(work_dir)
             except Exception as exc:
                 logger.error("RepoQuester run failed: %s", exc, exc_info=True)
                 raise
@@ -161,16 +206,6 @@ class RepoQuesterOperator(BaseOperator):
             "Wrote %d project(s) to %s.", len(pending), repo_urls_path
         )
 
-    def _write_token(self, work_dir: Path, token: str) -> None:
-        """Inject the GitHub token into RepoQuester's tokens.py."""
-        tokens_path = work_dir / "tokens.py"
-        tokens_path.write_text(
-            f'import os\n'
-            f'root_directory = os.getcwd()\n'
-            f'git_tokens = {{"{token}": "pipeline"}}\n'
-        )
-        logger.debug("GitHub token injected into tokens.py.")
-
     # ------------------------------------------------------------------
     # Execution helpers
     # ------------------------------------------------------------------
@@ -199,39 +234,6 @@ class RepoQuesterOperator(BaseOperator):
     # ------------------------------------------------------------------
     # Result parsing
     # ------------------------------------------------------------------
-
-    def _read_results(self, work_dir: Path) -> dict[str, dict]:
-        """
-        Read analysis results from RepoQuester's SQLite database.
-
-        Returns a dict mapping full_name → metrics dict.
-        """
-        db_path = work_dir / "repo_quester.db"
-        if not db_path.exists():
-            raise FileNotFoundError(
-                f"RepoQuester did not produce a database at {db_path}. "
-                "Check RepoQuester logs for errors."
-            )
-
-        results = {}
-        conn = sqlite3.connect(str(db_path))
-        conn.row_factory = sqlite3.Row
-        try:
-            cursor = conn.execute(
-                f"""
-                SELECT repository, {', '.join(METRIC_COLUMNS)}
-                FROM repoquester_results
-                """
-            )
-            for row in cursor:
-                full_name = row["repository"]
-                metrics = {col: row[col] for col in METRIC_COLUMNS}
-                results[full_name] = metrics
-        finally:
-            conn.close()
-
-        logger.info("Read %d result(s) from RepoQuester database.", len(results))
-        return results
 
     # ------------------------------------------------------------------
     # Utilities
