@@ -7,7 +7,6 @@ microsoft/markitdown
 django/django
 home-assistant/core
 3b1b/manim
-bregman-arie/devops-exercises
 hacksider/Deep-Live-Cam
 fighting41love/funNLP
 browser-use/browser-use
@@ -18,7 +17,6 @@ swisskyrepo/PayloadsAllTheThings
 infiniflow/ragflow
 sherlock-project/sherlock
 github/spec-kit
-josephmisiti/awesome-machine-learning
 python/cpython
 pallets/flask
 vllm-project/vllm
@@ -27,9 +25,7 @@ binary-husky/gpt_academic
 OpenHands/OpenHands
 ansible/ansible
 hiyouga/LlamaFactory
-labmlai/annotated_deep_learning_paper_implementations
 xtekky/gpt4free
-scikit-learn/scikit-learn
 localstack/localstack
 FoundationAgents/MetaGPT
 keras-team/keras
@@ -100,7 +96,6 @@ chubin/cheat.sh
 Aider-AI/aider
 jingyaogong/minimind
 google-research/bert
-floodsung/Deep-Learning-Papers-Reading-Roadmap
 lm-sys/FastChat
 QuivrHQ/quivr
 2noise/ChatTTS
@@ -154,7 +149,6 @@ khoj-ai/khoj
 open-mmlab/mmdetection
 stanfordnlp/dspy
 0xAX/linux-insides
-yunjey/pytorch-tutorial
 facebookresearch/fairseq
 frappe/erpnext
 datalab-to/marker
@@ -169,14 +163,12 @@ OpenBMB/ChatDev
 donnemartin/interactive-coding-challenges
 microsoft/graphrag
 tqdm/tqdm
-eriklindernoren/ML-From-Scratch
 Lightning-AI/pytorch-lightning
 TauricResearch/TradingAgents
 iperov/DeepFaceLive
 s0md3v/roop
 trailofbits/algo
 dgtlmoon/changedetection.io
-tatsu-lab/stanford_alpaca
 openai/openai-python
 jumpserver/jumpserver
 encode/django-rest-framework
@@ -218,7 +210,6 @@ QwenLM/Qwen3
 facebookresearch/Detectron
 ycm-core/YouCompleteMe
 squidfunk/mkdocs-material
-WZMIAOMIAO/deep-learning-for-image-processing
 huggingface/open-r1
 ungoogled-software/ungoogled-chromium
 Vision-CAIR/MiniGPT-4
@@ -227,7 +218,6 @@ matterport/Mask_RCNN
 assafelovic/gpt-researcher
 searxng/searxng
 keon/algorithms
-black-forest-labs/flux
 Cinnamon/kotaemon
 Fosowl/agenticSeek
 pypa/pipenv
@@ -248,7 +238,6 @@ kovidgoyal/calibre
 subframe7536/maple-font
 spotDL/spotify-downloader
 OpenBMB/MiniCPM-o
-pytorch/examples
 sgl-project/sglang
 Anjok07/ultimatevocalremovergui
 zai-org/Open-AutoGLM
@@ -292,8 +281,6 @@ mkdocs/mkdocs
 PrefectHQ/prefect
 recommenders-team/recommenders
 XiaoMi/ha_xiaomi_home
-wistbean/learn_python3_spider
-davila7/claude-code-templates
 letta-ai/letta
 huggingface/datasets
 openai/chatgpt-retrieval-plugin
@@ -336,7 +323,6 @@ rsms/inter
 kaixindelele/ChatPaper
 joke2k/faker
 openai/openai-agents-python
-nari-labs/dia
 camel-ai/owl
 Avaiga/taipy
 soxoj/maigret
@@ -372,7 +358,6 @@ sczhou/CodeFormer
 apple/ml-stable-diffusion
 InstaPy/InstaPy
 emcie-co/parlant
-trekhleb/learn-python
 arc53/DocsGPT
 deepseek-ai/Janus
 fastapi/sqlmodel
@@ -380,7 +365,6 @@ VectifyAI/PageIndex
 onyx-dot-app/onyx
 pytorch/vision
 hummingbot/hummingbot
-mnielsen/neural-networks-and-deep-learning
 huggingface/trl
 eriklindernoren/PyTorch-GAN
 astral-sh/ty
@@ -496,7 +480,6 @@ horovod/horovod
 D4Vinci/Scrapling
 HKUDS/DeepCode
 trustedsec/social-engineer-toolkit
-ShangtongZhang/reinforcement-learning-an-introduction
 Nuitka/Nuitka
 OthmanAdi/planning-with-files
 nltk/nltk
@@ -529,7 +512,6 @@ PaddlePaddle/PaddleDetection
 sivel/speedtest-cli
 geldata/gel
 maurosoria/dirsearch
-coderamp-labs/gitingest
 google/yapf
 idank/explainshell
 donnemartin/awesome-aws
@@ -575,7 +557,6 @@ TomSchimansky/CustomTkinter
 apache/tvm
 sshuttle/sshuttle
 prowler-cloud/prowler
-dabeaz-course/python-mastery
 pytube/pytube
 dbcli/pgcli
 MODSetter/SurfSense
@@ -589,7 +570,6 @@ evilsocket/opensnitch
 pyinstaller/pyinstaller
 Rudrabha/Wav2Lip
 jina-ai/clip-as-service
-MorvanZhou/tutorials
 Jiayi-Pan/TinyZero
 DLR-RM/stable-baselines3
 facebookresearch/AnimatedDrawings
@@ -613,14 +593,12 @@ facebookresearch/vggt
 zai-org/CogVideo
 xszyou/Fay
 cheahjs/free-llm-api-resources
-567-labs/instructor
 FujiwaraChoki/MoneyPrinter
 seleniumbase/SeleniumBase
 ultrafunkamsterdam/undetected-chromedriver
 Datalux/Osintgram
 sapientinc/HRM
 asweigart/pyautogui
-dbt-labs/dbt-core
 Anionex/banana-slides
 MemoriLabs/Memori
 lllyasviel/stable-diffusion-webui-forge
@@ -638,7 +616,6 @@ bentoml/OpenLLM
 PKU-YuanGroup/Open-Sora-Plan
 guofei9987/blind_watermark
 bobeff/open-source-games
-The-Pocket/PocketFlow-Tutorial-Codebase-Knowledge
 RUCAIBox/LLMSurvey
 OpenMOSS/MOSS
 secdev/scapy
@@ -674,7 +651,6 @@ Chainlit/chainlit
 openai/spinningup
 thuml/Time-Series-Library
 tadata-org/fastapi_mcp
-Dod-o/Statistical-Learning-Method_Code
 mealie-recipes/mealie
 EmbraceAGI/awesome-chatgpt-zh
 EleutherAI/lm-evaluation-harness
@@ -683,7 +659,6 @@ pallets/jinja
 keephq/keep
 g1879/DrissionPage
 robotframework/robotframework
-hoya012/deep_learning_object_detection
 HKUDS/AI-Trader
 darrenburns/posting
 Farama-Foundation/Gymnasium
@@ -738,14 +713,12 @@ shiyu-coder/Kronos
 huggingface/text-generation-inference
 simonw/datasette
 kedro-org/kedro
-x-hw/amazing-qr
 NevaMind-AI/memU
 AlessandroZ/LaZagne
 cumulo-autumn/StreamDiffusion
 django-cms/django-cms
 facebookresearch/ParlAI
 langchain-ai/open_deep_research
-dabeaz-course/practical-python
 rq/rq
 muratcankoylan/Agent-Skills-for-Context-Engineering
 ultralytics/yolov3
@@ -766,7 +739,6 @@ Kludex/uvicorn
 voxel51/fiftyone
 triton-inference-server/server
 EvanLi/Github-Ranking
-chiphuyen/stanford-tensorflow-tutorials
 modin-project/modin
 harelba/q
 facebookresearch/xformers
@@ -785,7 +757,6 @@ Tongyi-MAI/Z-Image
 megadose/holehe
 fossasia/visdom
 facebookresearch/hydra
-Jack-Cherish/Machine-Learning
 AIGC-Audio/AudioGPT
 sissbruecker/linkding
 ParthJadhav/Tkinter-Designer
@@ -810,7 +781,6 @@ abetlen/llama-cpp-python
 Theano/Theano
 yutiansut/QUANTAXIS
 lyhue1991/eat_tensorflow2_in_30_days
-bigscience-workshop/petals
 IdreesInc/Monocraft
 healthchecks/healthchecks
 google-deepmind/sonnet
@@ -842,7 +812,6 @@ QuentinFuxa/WhisperLiveKit
 frappe/frappe
 yzhao062/pyod
 lutris/lutris
-kyutai-labs/moshi
 boto/boto3
 open-mmlab/Amphion
 drivendataorg/cookiecutter-data-science
@@ -866,12 +835,10 @@ ostris/ai-toolkit
 sktime/sktime
 aws/serverless-application-model
 sqlfluff/sqlfluff
-seemoo-lab/opendrop
 BlinkDL/ChatRWKV
 sloria/TextBlob
 shidahuilang/shuyuan
 huggingface/accelerate
-joelgrus/data-science-from-scratch
 scrapinghub/portia
 KoljaB/RealtimeSTT
 pymc-devs/pymc
@@ -885,7 +852,6 @@ dataabc/weiboSpider
 zyddnys/manga-image-translator
 livekit/agents
 malwaredllc/byob
-MorvanZhou/Reinforcement-learning-with-tensorflow
 ollama/ollama-python
 iam-veeramalla/Jenkins-Zero-To-Hero
 offa/android-foss
@@ -904,7 +870,6 @@ PaddlePaddle/PaddleSeg
 K-Dense-AI/claude-scientific-skills
 hanxi/xiaomusic
 ValueCell-ai/valuecell
-voicepaw/so-vits-svc-fork
 bytedance/monolith
 seatgeek/fuzzywuzzy
 je-suis-tm/quant-trading
@@ -930,7 +895,6 @@ Usagi-org/ai-goofish-monitor
 byt3bl33d3r/CrackMapExec
 xorbitsai/inference
 yihong0618/bilingual_book_maker
-pytorch/tutorials
 dylanaraps/pywal
 OpenRLHF/OpenRLHF
 arrow-py/arrow
@@ -946,7 +910,6 @@ Uberi/speech_recognition
 n1nj4sec/pupy
 NVIDIA/apex
 vitalik/django-ninja
-jianchang512/clone-voice
 sensepost/objection
 OctoPrint/OctoPrint
 jzhang38/TinyLlama
@@ -963,7 +926,6 @@ vvbbnn00/WARP-Clash-API
 mailpile/Mailpile
 bytedance/Dolphin
 Chalarangelo/30-seconds-of-python
-lazyprogrammer/machine_learning_examples
 ashawkey/stable-dreamfusion
 domlysz/BlenderGIS
 bottlepy/bottle
@@ -999,7 +961,6 @@ Sitoi/dailycheckin
 kellyjonbrazil/jc
 QwenLM/Qwen3-TTS
 pdm-project/pdm
-google/adk-samples
 MVIG-SJTU/AlphaPose
 langchain-ai/local-deep-researcher
 angr/angr
@@ -1019,8 +980,6 @@ PantsuDango/Dango-Translator
 netease-youdao/EmotiVoice
 gelstudios/gitfiti
 jupyter/docker-stacks
-firmai/financial-machine-learning
-aladdinpersson/Machine-Learning-Collection
 jd/tenacity
 spesmilo/electrum
 facebookresearch/DiT
@@ -1040,8 +999,6 @@ google/trax
 rbgirshick/py-faster-rcnn
 EleutherAI/gpt-neo
 llamastack/llama-stack
-ml-explore/mlx-examples
-CASIA-LMC-Lab/FastSAM
 google-deepmind/pysc2
 TheKingOfDuck/fuzzDicts
 snakers4/silero-vad
@@ -1067,7 +1024,6 @@ vietnh1009/ASCII-generator
 brycedrennan/imaginAIry
 linyqh/NarratoAI
 jbiaojerry/ebook-treasure-chest
-jackzhenguo/python-small-examples
 apify/crawlee-python
 XPixelGroup/BasicSR
 carson-katri/dream-textures
@@ -1083,7 +1039,6 @@ lastmile-ai/mcp-agent
 microsoft/UFO
 litestar-org/litestar
 openai/jukebox
-TingsongYu/PyTorch_Tutorial
 mikel-brostrom/boxmot
 openedx/openedx-platform
 hugsy/gef
@@ -1166,7 +1121,6 @@ AntixK/PyTorch-VAE
 itcharge/AlgoNote
 tubearchivist/tubearchivist
 mli/autocut
-Azure-Samples/azure-search-openai-demo
 smacke/ffsubsync
 weaviate/Verba
 FunAudioLLM/SenseVoice
@@ -1200,7 +1154,6 @@ r0ysue/r0capture
 bndr/pipreqs
 MaartenGr/BERTopic
 QwenLM/Qwen-Image
-LuckyOne7777/LLM-Trading-Lab
 LargeWorldModel/LWM
 mvdctop/Movie_Data_Capture
 tensorlayer/TensorLayer
@@ -1215,7 +1168,6 @@ boltgolt/howdy
 tkipf/gcn
 awslabs/aws-shell
 guchangan1/All-Defense-Tool
-fchollet/deep-learning-models
 hellerve/programming-talks
 agronholm/apscheduler
 QuivrHQ/MegaParse
@@ -1244,7 +1196,6 @@ myshell-ai/MeloTTS
 OpenTalker/video-retalking
 lbryio/lbry-sdk
 paperswithbacktest/awesome-systematic-trading
-mit-han-lab/streaming-llm
 python-trio/trio
 Zyphra/Zonos
 liuhuanyong/QASystemOnMedicalKG
@@ -1271,20 +1222,16 @@ alirezamika/autoscraper
 wzpan/wukong-robot
 0x4m4/hexstrike-ai
 Qiskit/qiskit
-scikit-learn-contrib/imbalanced-learn
 sammchardy/python-binance
 jarun/buku
-vt-vl-lab/3d-photo-inpainting
 Mailu/Mailu
 sparckles/Robyn
 zai-org/GLM-4
 z1069614715/objectdetection_script
-instillai/machine-learning-course
 yangchris11/samurai
 microsoft/presidio
 Jrohy/multi-v2ray
 JerBouma/FinanceDatabase
-princewen/tensorflow_practice
 joshpxyne/gpt-migrate
 OpenNMT/OpenNMT-py
 taobao/nginx-book
@@ -1362,10 +1309,8 @@ yisol/IDM-VTON
 h2oai/h2o-llmstudio
 lyuwenyu/RT-DETR
 roboflow/sports
-oomol-lab/pdf-craft
 quantumlib/Cirq
 argilla-io/argilla
-jcjohnson/pytorch-examples
 freqtrade/freqtrade-strategies
 Bitwise-01/Instagram-
 neuphonic/neutts
@@ -1392,7 +1337,6 @@ thunlp/OpenPrompt
 triwinds/ns-emu-tools
 pywebio/PyWebIO
 idealo/image-super-resolution
-ets-labs/python-dependency-injector
 disposable-email-domains/disposable-email-domains
 transformerlab/transformerlab-app
 SpiderClub/weibospider
@@ -1436,7 +1380,6 @@ MoonInTheRiver/DiffSinger
 cookiecutter-flask/cookiecutter-flask
 yanx27/Pointnet_Pointnet2_pytorch
 sjvasquez/handwriting-synthesis
-aipotheosis-labs/aci
 InkboxSoftware/excelCPU
 Qix-/better-exceptions
 Vector-Wangel/XLeRobot
@@ -1459,12 +1402,10 @@ KellerJordan/modded-nanogpt
 huggingface/nanoVLM
 nateraw/stable-diffusion-videos
 hhatto/autopep8
-hzy46/Deep-Learning-21-Examples
 NewFuture/DDNS
 initialcommit-com/git-sim
 ThioJoe/YT-Spammer-Purge
 blocklistproject/Lists
-instillai/deep-learning-roadmap
 lm-sys/RouteLLM
 michael-lazar/rtv
 XiaoYouChR/Ghost-Downloader-3
@@ -1472,7 +1413,6 @@ hiyouga/EasyR1
 gbeced/pyalgotrade
 metabrainz/picard
 PKU-Alignment/align-anything
-ronreiter/interactive-tutorials
 yanshengjia/ml-road
 gusmanb/logicanalyzer
 Guake/guake
@@ -1497,13 +1437,11 @@ Marker-Inc-Korea/AutoRAG
 spec-first/connexion
 yizhongw/self-instruct
 dmMaze/BallonsTranslator
-sweetice/Deep-reinforcement-learning-with-pytorch
 InsaneLife/ChineseNLPCorpus
 okfn-brasil/serenata-de-amor
 LLaVA-VL/LLaVA-NeXT
 hephaest0s/usbkill
 NVlabs/neuralangelo
-Kr1s77/Python-crawler-tutorial-starts-from-zero
 Breakthrough/PySceneDetect
 kyegomez/tree-of-thoughts
 lennylxx/ipv6-hosts
@@ -1519,12 +1457,10 @@ tensorflow/datasets
 keylase/nvidia-patch
 gpustack/gpustack
 mangiucugna/json_repair
-karpathy/ng-video-lecture
 Tianxiaomo/pytorch-YOLOv4
 sensity-ai/dot
 scottrogowski/code2flow
 jasperproject/jasper-client
-pythonguis/pythonguis-examples
 motioneye-project/motioneye
 HKUDS/AI-Researcher
 audreyfeldroy/cookiecutter-pypackage
@@ -1619,7 +1555,6 @@ dataabc/weibo-crawler
 RoganDawes/P4wnP1
 MongoEngine/mongoengine
 vinayak-mehta/present
-MorvanZhou/Tensorflow-Tutorial
 SWE-bench/SWE-bench
 iam-veeramalla/python-for-devops
 wookayin/gpustat
@@ -1654,7 +1589,6 @@ AI4Finance-Foundation/ElegantRL
 StructuredLabs/preswald
 pyqtgraph/pyqtgraph
 dreamgaussian/dreamgaussian
-decodingai-magazine/llm-twin-course
 gaussic/text-classification-cnn-rnn
 microsoft/LMOps
 GerbenJavado/LinkFinder
@@ -1695,7 +1629,6 @@ zai-org/GLM-4.5
 h2oai/wave
 ali-vilab/AnyDoor
 microsoft/AI-System
-cs230-stanford/cs230-code-examples
 DanMcInerney/wifijammer
 ssut/py-googletrans
 RUB-NDS/PRET
@@ -1731,7 +1664,6 @@ amidaware/tacticalrmm
 facebookresearch/flow_matching
 eth-sri/lmql
 blinker-iot/blinker-py
-lisa-lab/DeepLearningTutorials
 CrazyBoyM/llama3-Chinese-chat
 facebookresearch/nevergrad
 cloudflare/flan
@@ -1776,13 +1708,11 @@ PINTO0309/PINTO_model_zoo
 PaddlePaddle/PaddleRec
 Threekiii/Awesome-Redteam
 wasi-master/13ft
-anasty17/mirror-leech-telegram-bot
 NVlabs/imaginaire
 ansible/molecule
 Pylons/pyramid
 leon-thomm/Ryven
 deepseek-ai/DeepSeek-VL
-google-deepmind/learning-to-learn
 mlfoundations/open_flamingo
 sksq96/pytorch-summary
 stumpy-dev/stumpy
@@ -1809,7 +1739,6 @@ pydantic/logfire
 LearningCircuit/local-deep-research
 facebookresearch/Detic
 tensorflow/privacy
-animate1978/MB-Lab
 GoogleCloudPlatform/PerfKitBenchmarker
 sagemath/sage-archive-2023-02-01
 ywangd/stash
@@ -1824,9 +1753,7 @@ muskie82/MonoGS
 mitsuhiko/pipsi
 ansible-community/ara
 OpenHelix-Team/VLA-Adapter
-wassim249/fastapi-langgraph-agent-production-ready-template
 upbit/pixivpy
-databricks/spark-deep-learning
 noamgat/lm-format-enforcer
 cuemacro/findatapy
 mozilla/cipherscan
@@ -1849,7 +1776,6 @@ albertpumarola/GANimation
 harry0703/AudioNotes
 mvantellingen/python-zeep
 Jon-Becker/prediction-market-analysis
-PacktPublishing/Advanced-Deep-Learning-with-Keras
 ZiyaoGeng/RecLearn
 r9y9/deepvoice3_pytorch
 H1R0GH057/Anonymous
@@ -1920,7 +1846,6 @@ philipperemy/tensorflow-1.4-billion-password-analysis
 pyupio/safety
 WenjieDu/PyPOTS
 facebookresearch/fairchem
-Xyntax/POC-T
 guillaumegenthial/sequence_tagging
 weaveworks/grafanalib
 horseee/Awesome-Efficient-LLM
@@ -1958,7 +1883,6 @@ loujie0822/DeepIE
 AgentOps-AI/tokencost
 rueckstiess/mtools
 doableware/djongo
-mit-han-lab/once-for-all
 openai/maddpg
 rubik/radon
 exchangeratesapi/exchangeratesapi
@@ -1979,7 +1903,6 @@ XiaomiMiMo/MiMo
 hxz393/BaiduPanFilesTransfers
 logpai/logparser
 FoundationVision/LlamaGen
-InternLM/Tutorial
 thu-coai/CDial-GPT
 timbrel/GitSavvy
 NVIDIA/cutile-python
@@ -2006,7 +1929,6 @@ liberapay/liberapay.com
 appvision-ai/fast-bert
 Vchitect/Latte
 linbailo/zyqinglong
-microsoft/sample-app-aoai-chatGPT
 aigc-apps/VideoX-Fun
 mdn/kuma
 jd-opensource/OxyGent
@@ -2073,7 +1995,6 @@ PixArt-alpha/PixArt-sigma
 jiesutd/NCRFpp
 ycd/manage-fastapi
 lixi5338619/lxSpider
-LeCAR-Lab/ASAP
 yuru7/udev-gothic
 will8211/unimatrix
 plbrault/youre-the-os
@@ -2118,13 +2039,10 @@ weaviate/elysia
 clue-ai/ChatYuan
 deepmodeling/deepmd-kit
 Koed00/django-q
-neonwatty/machine-learning-refined
-tobegit3hub/tensorflow_template_application
 425776024/nlpcda
 uber/petastorm
 facebookresearch/denoiser
 ChrispyBacon-dev/DockFlare
-chaidiscovery/chai-lab
 nitrain/nitrain
 trevorhobenshield/twitter-api-client
 kraanzu/smassh
@@ -2194,7 +2112,6 @@ mandiant/speakeasy
 sartography/SpiffWorkflow
 roboterax/humanoid-gym
 openatx/facebook-wda
-aquadzn/learn-x-by-doing-y
 arkane-systems/genie
 lyft/confidant
 alexbers/mtprotoproxy
@@ -2208,7 +2125,6 @@ linkedin/greykite
 kleinlee/DH_live
 simple-salesforce/simple-salesforce
 danpaquin/coinbasepro-python
-twtrubiks/docker-tutorial
 kimwang1978/collect-txt
 GrrrDog/weird_proxies
 ssili126/tv
@@ -2227,13 +2143,11 @@ lyrebird-voice-changer/lyrebird
 SkyworkAI/Matrix-Game
 0xInfection/TIDoS-Framework
 pypyjs/pypyjs
-JimmyHHua/opencv_tutorials
 alecthomas/voluptuous
 maguowei/starred
 notadamking/RLTrader
 n0a/telegram-get-remote-ip
 corelan/mona
-kozmer/log4j-shell-poc
 Kav-K/GPTDiscord
 jennyzzt/dgm
 bugy/script-server
@@ -2257,7 +2171,6 @@ ytongbai/LVM
 ethereum/pm
 appium/python-client
 minimaxir/aitextgen
-Music-and-Culture-Technology-Lab/omnizart
 tryolabs/requestium
 NVIDIA/NeMo-Agent-Toolkit
 xianhu/PSpider
@@ -2288,7 +2201,6 @@ visual-layer/fastdup
 kk7nc/Text_Classification
 myusuf3/delorean
 GauravBh1010tt/DeepLearn
-black-forest-labs/flux2
 facebookresearch/TimeSformer
 NVlabs/stylegan2-ada
 Alibaba-Quark/LiveAvatar
@@ -2296,7 +2208,6 @@ kohya-ss/sd-webui-additional-networks
 dronesploit/dronesploit
 rentruewang/koila
 eeeeeeeeee-code/e0e1-wx
-zabbix/community-templates
 django-tenants/django-tenants
 microsoft/Cream
 san089/Udacity-Data-Engineering-Projects
@@ -2333,7 +2244,6 @@ magenta/magenta-realtime
 i-am-bee/agentstack
 PRIME-RL/TTRL
 python/pyperformance
-google/it-cert-automation-practice
 zju3dv/OnePose
 uber/h3-py
 KaiyangZhou/pytorch-center-loss
@@ -2378,7 +2288,6 @@ mgeeky/RedWarden
 clcarwin/focal_loss_pytorch
 Yinzo/SmartQQBot
 sauljabin/kaskade
-hackingthemarkets/binance-tutorials
 khscience/OSkhQuant
 OpenDriveLab/UniVLA
 ildoonet/pytorch-gradual-warmup-lr
@@ -2390,7 +2299,6 @@ dext0r/yandex_smart_home
 QIN2DIM/V2RSS
 jalan/pdftotext
 Algebra-FUN/WeReadScan
-RasaHQ/rasa-demo
 lichess-bot-devs/lichess-bot
 lebedov/scikit-cuda
 google-research/augmix
@@ -2440,8 +2348,6 @@ andrew-codechimp/HA-Battery-Notes
 Brikwerk/nxbt
 MaurizioFD/RecSys2019_DeepLearning_Evaluation
 mitre-attack/car
-rmunro/pytorch_active_learning
-OML-Team/open-metric-learning
 otto-torino/django-baton
 jazzband/geojson
 localminimum/QANet
@@ -2459,7 +2365,6 @@ quentinhardy/msdat
 mottosso/Qt.py
 Liuhong99/Sophia
 vmagamedov/grpclib
-TeFuirnever/Machine-Learning-in-Action
 WittmannF/sort-google-scholar
 Hello-Mr-Crab/pywechat
 TutteInstitute/datamapplot
@@ -2469,14 +2374,12 @@ shibing624/textgen
 xpleaf/Blog_mini
 uber-archive/plato-research-dialogue-system
 jowilf/starlette-admin
-VILA-Lab/ATLAS
 jacobgil/keras-dcgan
 N0rz3/Phunter
 llSourcell/deepfakes
 bitcoin-abe/bitcoin-abe
 SUC-DriverOld/MSST-WebUI
 facebookincubator/OnlineSchemaChange
-piEsposito/blitz-bayesian-deep-learning
 naver/splade
 philipperemy/name-dataset
 venmo/business-rules
@@ -2536,7 +2439,6 @@ daijro/browserforge
 genforce/sefa
 KhamisiKibet/QT-PyQt-PySide-Custom-Widgets
 Shrans/GalSites
-alex-petrenko/sample-factory
 datawhores/OF-Scraper
 olyble/callPhoneBoom
 RiotGames/leaguedirector
@@ -2562,7 +2464,6 @@ samuelcolvin/dirty-equals
 MattMoony/figaro
 hyperdiv/hyperdiv
 hwchase17/chat-your-data
-tuan3w/obsidian-template
 JosephLai241/URS
 graspologic-org/graspologic
 mxrch/GitFive
@@ -2599,7 +2500,6 @@ zhyever/Monocular-Depth-Estimation-Toolbox
 openmc-dev/openmc
 meta-pytorch/torchcodec
 shteeve3d/blender-wiggle-2
-thinking-machines-lab/batch_invariant_ops
 dr0op/WeblogicScan
 KnugiHK/WhatsApp-Chat-Exporter
 DinoMan/speech-driven-animation
@@ -2638,11 +2538,9 @@ flipperdevices/flipperzero-ufbt
 AlfredXiangWu/LightCNN
 DMOJ/judge-server
 xinntao/facexlib
-giswqs/qgis-earthengine-examples
 wikipedia2vec/wikipedia2vec
 bootmortis/iran-hosted-domains
 WenmuZhou/OCR_DataSet
-gabrieleangeletti/Deep-Learning-TensorFlow
 JimmXinu/FanFicFare
 jbarrow/commonforms
 home-assistant-libs/pytradfri
@@ -2660,7 +2558,6 @@ ProjectQ-Framework/ProjectQ
 ioncodes/idacode
 mikekelly/AgentK
 clarkduvall/serpy
-ipa-lab/hackingBuddyGPT
 datawhalechina/dive-into-cv-pytorch
 drprojects/superpoint_transformer
 yaohungt/Multimodal-Transformer
@@ -2693,14 +2590,12 @@ clemfromspace/scrapy-selenium
 andrewmcgr/klipper_tmc_autotune
 plotly/jupyter-dash
 antiboredom/audiogrep
-PanJinquan/tensorflow_models_learning
 zepen/predict_Lottery_ticket
 Cartucho/OpenLabeling
 thuiar/MMSA
 mgonzs13/yolo_ros
 MakotoKurauchi/helix
 WarBean/tps_stn_pytorch
-openfaas/workshop
 digglife/cnbankcard
 havakv/pycox
 learnbyexample/TUI-apps
@@ -2720,14 +2615,12 @@ mittagessen/kraken
 hakandundar34coding/system-monitoring-center
 ansible/ansible-modules-extras
 seddonym/import-linter
-easezyc/deep-transfer-learning
 adamchainz/time-machine
 horseee/DeepCache
 klen/mixer
 homeassistant-ai/ha-mcp
 molecularsets/moses
 CharlesPikachu/pytools
-MorvanZhou/NLP-Tutorials
 jimmyxu/chnroutes
 ihack4falafel/OSCP
 zai-org/CogView2
@@ -2741,10 +2634,8 @@ business-science/pytimetk
 tarpas/pytest-testmon
 scikit-multilearn/scikit-multilearn
 dnouri/nolearn
-LeCAR-Lab/human2humanoid
 binarymatt/pyres
 ndee85/coa_tools
-bowang-lab/U-Mamba
 universal-ie/UIE
 rcmalli/keras-vggface
 FPGAwars/apio
@@ -2797,7 +2688,6 @@ coderholic/django-cities
 pollen-robotics/reachy_mini
 scrapinghub/extruct
 YoSmudge/dnsyo
-ysde/grafana-backup-tool
 kr8s-org/kr8s
 Vchitect/LaVie
 qeeqbox/honeypots
@@ -2810,7 +2700,6 @@ hlldz/SpookFlare
 zhaofuq/LOD-3DGS
 Lancetnik/Propan
 sbrunner/deskew
-0xTheProDev/fastapi-clean-example
 laspy/laspy
 kturung/langgraph_streamlit_codeassistant
 rabbitmask/AssetsHunter
@@ -2836,7 +2725,6 @@ w3c/trace-context
 Manisso/Crips
 itsmehacker/DarkScrape
 GengDavid/pytorch-cpn
-asacristani/fastapi-rocket-boilerplate
 XifengGuo/DEC-keras
 hemingkx/ChineseNMT
 antgroup/glake
@@ -2853,13 +2741,11 @@ miracle2k/onkyo-eiscp
 Haian-Jin/LVSM
 MrTornado24/Next3D
 msight-tech/research-ms-loss
-rentruewang/learning-machine
 vkocubinsky/SublimeTableEditor
 TUDelft-CNS-ATM/bluesky
 zqhZY/_rasa_chatbot
 va1shn9v/PromptIR
 useragents/Proxyless-TikTok-Username-Checker
-shannonturner/python-lessons
 BenevolentAI/guacamol
 acbull/GPT-GNN
 PengBoXiangShang/SiamRPN_plus_plus_PyTorch
@@ -2870,11 +2756,9 @@ taylorlu/Speaker-Diarization
 chroma-core/chroma-mcp
 maroba/findiff
 ReactionMechanismGenerator/RMG-Py
-attendee-labs/attendee
 linxuewu/Sparse4D
 LiangYang666/ChatGPT-Web
 waczjoan/gaussian-mesh-splatting
-scikit-learn-contrib/DESlib
 Hangz-nju-cuhk/Rotate-and-Render
 MITRECND/chopshop
 DylanWusee/pointconv
@@ -2896,7 +2780,6 @@ abides-sim/abides
 hjptriplebee/Chinese_poem_generator
 hongyaohongyao/smart_classroom
 facebookarchive/adversarial_image_defenses
-huggingface/large_language_model_training_playbook
 xhluca/dl-translate
 LaurieWired/iOS_Reverse_Engineering
 hustvl/EVF-SAM
@@ -2984,8 +2867,6 @@ Charcoal-SE/SmokeDetector
 yeungchenwa/FontDiffuser
 D4Vinci/PyLoggy
 krea-ai/realtime-video
-dbt-labs/dbt-mcp
-udacity/CarND-Term1-Starter-Kit
 logtd/ComfyUI-HunyuanLoom
 81NewArk/AntiCAP
 estebanpdl/osintgpt
@@ -3008,7 +2889,6 @@ LimHyungTae/ERASOR
 toverainc/willow-inference-server
 ckmarkoh/neuralart_tensorflow
 brutasse/graphite-api
-harvitronix/reinforcement-learning-car
 kaushalshetty/Structured-Self-Attention
 openmedlab/PULSE
 PacktPublishing/Python-3-Object-Oriented-Programming-Third-Edition
@@ -3024,7 +2904,6 @@ ProfileManifests/ProfileManifests
 WyAtu/CVE-2018-20250
 DonnchaC/shadowbrokers-exploits
 daijifeng001/MNC
-dottantgal/ROS2_learning
 PacktPublishing/Getting-Started-with-TensorFlow
 vikasverma1077/manifold_mixup
 nurkiewicz/polski-w-it
@@ -3053,7 +2932,6 @@ pyranges/pyranges
 Suwmlee/ikaros
 TRI-ML/dd3d
 sky-ecosystem/market-maker-keeper
-MurphyWan/Python-first-Practice
 OTA-Tech-AI/web-agent-protocol
 yuanzhi-zhu/DiffPIR
 facebookresearch/suncet
@@ -3132,7 +3010,6 @@ okaris/omni-zero
 kemayo/maphilight
 HadoopIt/rnn-nlu
 mtagius/pwnagotchi-tools
-MasterGroosha/telegram-tutorial
 chenxiaoyouyou/Bert-BiLSTM-CRF-pytorch
 AnubhavGupta3377/Text-Classification-Models-Pytorch
 NVlabs/nvdiffmodeling
@@ -3158,7 +3035,6 @@ LindseyB/starwars-dot-gif
 OpenBMB/DeepThinkVLA
 jugaad-py/jugaad-data
 mikadosoftware/workstation
-bigscience-workshop/biomedical
 GuyTevet/MotionCLIP
 Koischizo/AI-Vtuber
 SimJeg/FC-DenseNet
@@ -3188,7 +3064,6 @@ automl/RoBO
 WenjiaWang0312/TextZoom
 VinF/deer
 harishsg993010/LLM-Reasoner
-ivan-borovets/fastapi-clean-example
 mahmoodlab/TRIDENT
 MStypulkowski/diffused-heads
 AIChallenger/AI_Challenger_2017
@@ -3273,13 +3148,11 @@ intake/python-snappy
 cnkyrpsgl/leetcode
 DAMO-NLP-SG/CoI-Agent
 hmgoforth/PointNetLK
-codec2021/video_codec_learn
 termux/termux-create-package
 littlebyteorg/appledb
 tsileo/bakthat
 dsmrreader/dsmr-reader
 alibaba/cascade-stereo
-LechGrzelak/Computational-Finance-Course
 AndreaVidali/Deep-QLearning-Agent-for-Traffic-Signal-Control
 sapanz/Hackerrank-Problem-Solving-Python-Solutions
 Nanne/pytorch-NetVlad
@@ -3288,7 +3161,6 @@ ruped24/toriptables2
 BittyTax/BittyTax
 csuldw/AntSpider
 opendilab/DI-sheep
-xorq-labs/xorq
 andreasveit/densenet-pytorch
 artefactual/archivematica
 implus/GFocalV2
@@ -3310,7 +3182,6 @@ hasherezade/ida_ifl
 amplab/benchmark
 chaordic/tiopatinhas
 rufuspollock-okfn/dataconverters
-PacktPublishing/Learning_DevOps
 Dirk94/ChessAI
 EthanRosenthal/nannernest
 FHPythonUtils/Cli2Gui
@@ -3401,7 +3272,6 @@ ani8897/Human-Activity-Recognition
 kongdai123/repainting_3d_assets
 lucifer443/SpineNet-Pytorch
 GianlucaPaolocci/Sound-classification-on-Raspberry-Pi-with-Tensorflow
-j2logo/tutorial-flask
 ZhChessOvO/ZeLanChao_KGQA
 wavespectra/wavespectra
 solvercaptcha/solvecaptcha-python
@@ -3409,12 +3279,10 @@ divanoLetto/3D_STEP_Classification
 enze5088/ChineseModernBert
 shengchenyang/AyugeSpiderTools
 NishNishendanidu/mtroid-bot
-akashlevy/Deep-Learn-Oil
 mostafaaziza/alazizy
 yjqiang/danmu
 anibridge/anibridge
 Shathe/MNasNet-Keras-Tensorflow
-franzheidl/copy-paths-to-clipboard
 TencentYoutuResearch/Classification-SemiCLS
 sighingnow/libclang
 wraith-wireless/PyRIC
@@ -3438,7 +3306,6 @@ lehins/django-smartfields
 pensnarik/russian-cities
 joeseesun/AIGC_Telegram_Bot
 byteweaver/django-coupons
-shahrukhx01/multitask-learning-transformers
 frictionlessdata/livemark
 0xdsm/tomcter
 chaht01/Co2L
@@ -3460,7 +3327,6 @@ sagelywizard/snail
 dtc111111/Multi-Modal-UAV
 transic-robot/transic
 meganmansfield/taylorswift
-CityMind-Lab/ICML25-TimeVLM
 mnrkbys/vss_carver
 zyqz97/GP-NeRF
 Tung-I/Dual-awareness-Attention-for-Few-shot-Object-Detection
@@ -3482,12 +3348,9 @@ jaymody/speculative-sampling
 AbrahamSanders/seq2seq-chatbot
 BUPT-PRIV/LOAF
 UEF-BBC/nippy
-xie-lab-ml/Zigzag-Diffusion-Sampling
 tronikos/opower
 n-WN/prompt-manager
-Avalonswanderer/widevinel3_Android_PoC
 jakiepari/deezspot
-hwdqm88/SDU_sql_experiment_bookdb
 Mizogg/TeamHunter
 frappe/agent
 laserwave/topic_models
@@ -3530,7 +3393,6 @@ sweekarsud/Goodness-of-Pronunciation
 jaaazzz/GetCFipToDns
 pulsemindcover/Polymarket-AI-Trading-Bot
 czasg/pywss
-dechenx83/automation_test
 aj-naik/Emotion-Music-Recommendation
 BugBountyResources/targets
 edufonseca/icassp19
@@ -3585,7 +3447,6 @@ JingW-ui/PI-MAPP
 junminhong/awsui
 GrandMoff100/HomeAssistantAPI
 brainets/frites
-chr1shr/am205_examples
 fooying/3102
 dmfrey/FileLock
 maziarraissi/DeepVIV
@@ -3593,13 +3454,10 @@ JCruan519/MALUNet
 MFaceTech/HyperDreamBooth
 facebookresearch/unbiased-teacher-v2
 mc6666/MyNeuralNetwork
-jaehyeon-kim/nicegui-fastapi-template
 redhat-performance/quads
 dobrosketchkun/bionic-reading-epub-converter
 joelYing/XimalayaFM
 cycraft-corp/BinaryAnalysisMCPs
-aws-samples/rag-with-amazon-bedrock-and-pgvector
-Future-House/LAB-Bench
 newideas99/Anthropic-Computer-Use-MacOS
 GongRzhe/terminal-controller-mcp
 fkong7/MeshDeformNet
@@ -3607,7 +3465,6 @@ Dreemurr-T/BAID
 jags111/ComfyUI_Jags_Audiotools
 mkwiatkowski/pythoscope
 screenfreeze/deskcon-desktop
-argoproj-labs/argo-python-dsl
 brian6091/Dreambooth
 jianzongwu/Language-Driven-Video-Inpainting
 KaidiGuo/keyword_based_Sina_weibo_crawler
@@ -3617,7 +3474,6 @@ scateu/tsv_edl.vim
 laowu-code/iTansformer_LSTM_CA_KAN
 b40yd/security
 tthinking/MATR
-LoneKingCode/notion-backup
 Raz-Ahamed/CCTV_Hack
 IlhamriSKY/PDDIKTI-kemdikbud-API
 ofeksadlo/CSGO-Aimbot-CNN
@@ -3637,7 +3493,6 @@ DjangoPeng/openai-translator
 mtreviso/linear-chain-crf
 signalstickers/Adhesive
 dhruvramani/C2AE-Multilabel-Classification
-7hang/POC-EXP
 facebookresearch/NeuralPassthrough
 meizhiju/layered-bilstm-crf
 whs/runekit
@@ -3652,7 +3507,6 @@ Programmierus/ldap-mailcow
 facebookresearch/AutoAvatar
 Navu4/Facial-Recognition-for-Crime-Detection
 Akajiaku11/Ocean-Plastic-Waste-Prediction
-shehzaidi/pre-training-via-denoising
 matteodellamico/flexible-clustering
 yxKryptonite/RAM_code
 veebch/heat-o-matic
@@ -3674,15 +3528,12 @@ openplans/openblock-old
 edoburu/django-debugtools
 hackerearthclub/CODE2RACE
 StanfordVL/RubiksNet
-Praneet9/Representation-Learning-for-Information-Extraction
 sjtuplayer/MotionMaster
 sahagobinda/GPM
-Textualize/textual-demo
 ProjectD-AI/llama_inference
 ga4gh/ga4gh-server
 william-murray1204/stable-diffusion-cpp-python
 Karbo123/RGBD-Diffusion
-bokulich-lab/RESCRIPt
 OpenSurv/OpenSurv
 divamgupta/ladder_network_keras
 KnightJun/Google-ML-Recipes-Chs-sub-and-code
@@ -3708,7 +3559,6 @@ durner/yolo-autonomous-drone
 vijos/jd4
 bogdal/django-gcm
 wadhwasahil/Relation_Extraction
-boto/boto3-sample
 metriculous-ml/metriculous
 zhangyaqi1989/Ensemble-Methods-for-Image-Classification
 ZhengJun-AI/MoirePhotoRestoration-MCNN
@@ -3749,7 +3599,6 @@ waittim/draw-YOLO-box
 highvolt-dev/tmo-monitor
 zhanghuanhao/WireWhale
 amikey/12306
-M-E-AGI-Lab/Muddit
 cachix/docs.cachix.org
 Upper9527/DrVideo
 smcclennon/SongID
@@ -3786,7 +3635,6 @@ zju-vipa/KamalEngine
 bobo0810/XueLangTianchi
 craigthomas/Chip8Python
 eigenpunk/ComfyUI-audio
-tee-lab/PyDaddy
 powerscorinne/GLRM
 shekhargulati/python-flask-docker-hello-world
 mattjj/pyslds
@@ -3826,7 +3674,6 @@ jeecgboot/JeecgBoot
 apache/dubbo
 PhilJay/MPAndroidChart
 halo-dev/halo
-eugenp/tutorials
 TeamNewPipe/NewPipe
 alibaba/arthas
 geekxh/hello-algorithm
@@ -3835,7 +3682,6 @@ airbnb/lottie-android
 YunaiV/ruoyi-vue-pro
 bumptech/glide
 netty/netty
-xkcoding/spring-boot-demo
 SeleniumHQ/selenium
 zxing/zxing
 ashishps1/awesome-system-design-resources
@@ -3846,7 +3692,6 @@ alibaba/nacos
 binarywang/WxJava
 apache/kafka
 conductor-oss/conductor
-ityouknow/spring-boot-examples
 chinabugotech/hutool
 xuxueli/xxl-job
 apolloconfig/apollo
@@ -3887,7 +3732,6 @@ LSPosed/LSPosed
 openjdk/jdk
 ashishps1/awesome-low-level-design
 apache/rocketmq
-kunal-kushwaha/DSA-Bootcamp-Java
 google/ExoPlayer
 elunez/eladmin
 oracle/graal
@@ -3899,7 +3743,6 @@ didi/DoKit
 mybatis/mybatis-3
 ReactiveX/RxAndroid
 linlinjava/litemall
-yudaocode/SpringBoot-Labs
 JetBrains/intellij-community
 dianping/cat
 Baseflow/PhotoView
@@ -3923,23 +3766,19 @@ gyoogle/tech-interview-for-developer
 alibaba/DataX
 nostra13/Android-Universal-Image-Loader
 heibaiying/BigData-Notes
-winterbe/java8-tutorial
 Grasscutters/Grasscutter
 questdb/questdb
 shuzheng/zheng
 prestodb/presto
-JeffLi1993/springboot-learning-example
 android-hacker/VirtualXposed
 neo4j/neo4j
 ashishps1/awesome-leetcode-resources
-dyc87112/SpringBoot-Learning
 android10/Android-CleanArchitecture
 apache/hadoop
 quarkusio/quarkus
 Konloch/bytecode-viewer
 mockito/mockito
 apache/pulsar
-zhisheng17/flink-learning
 apache/doris
 java-decompiler/jd-gui
 supertokens/supertokens-core
@@ -3960,7 +3799,6 @@ DuGuQiuBai/Java
 Netflix/zuul
 kekingcn/kkFileView
 apache/druid
-janishar/mit-deep-learning-book-pdf
 orhanobut/logger
 sqshq/piggymetrics
 lgvalle/Material-Animations
@@ -3972,7 +3810,6 @@ LuckSiege/PictureSelector
 tink-crypto/tink
 Bigkoo/Android-PickerView
 projectlombok/lombok
-macrozheng/mall-learning
 pxb1988/dex2jar
 youth5201314/banner
 metersphere/metersphere
@@ -4006,7 +3843,6 @@ PaperMC/Paper
 provectus/kafka-ui
 Tencent/VasSonic
 OpenRefine/OpenRefine
-frank-lam/fullstack-tutorial
 code4craft/webmagic
 datahub-project/datahub
 newbee-ltd/newbee-mall
@@ -4031,7 +3867,6 @@ asLody/VirtualApp
 square/javapoet
 langchain4j/langchain4j
 clojure/clojure
-aosp-mirror/platform_frameworks_base
 TooTallNate/Java-WebSocket
 alibaba/vlayout
 zfile-dev/zfile
@@ -4044,7 +3879,6 @@ Activiti/Activiti
 lipangit/JiaoZiVideoPlayer
 tbruyelle/RxPermissions
 signalapp/Signal-Server
-awsdocs/aws-doc-sdk-examples
 JessYanCoding/MVPArms
 SonarSource/sonarqube
 JakeWharton/ViewPagerIndicator
@@ -4082,14 +3916,12 @@ json-path/JsonPath
 pockethub/PocketHub
 huanghaibin-dev/CalendarView
 GcsSloop/AndroidNote
-android/testing-samples
 apache/jmeter
 cats-oss/android-gpuimage
 apache/seatunnel
 flowable/flowable-engine
 didi/VirtualAPK
 navasmdc/MaterialDesignLibrary
-KunMinX/Jetpack-MVVM-Best-Practice
 Freelander/Android_Data
 HMCL-dev/HMCL
 java-native-access/jna
@@ -4158,7 +3990,6 @@ gedoor/MyBookshelf
 mapstruct/mapstruct
 google/android-classyshark
 koush/AndroidAsync
-kaushikgopal/RxJava-Android-Samples
 kevin-wayne/algs4
 MinecraftForge/MinecraftForge
 swagger-api/swagger-core
@@ -4169,7 +4000,6 @@ Genymobile/gnirehtet
 enso-org/enso
 lenve/VBlog
 FongMi/TV
-dyc87112/SpringCloud-Learning
 abel533/Mapper
 gocd/gocd
 Qihoo360/RePlugin
@@ -4200,12 +4030,9 @@ traccar/traccar
 CoderLeixiaoshuai/java-eight-part
 DroidPluginTeam/DroidPlugin
 junit-team/junit-framework
-alibaba/jvm-sandbox
-macrozheng/springcloud-learning
 iflytek/astron-rpa
 Meituan-Dianping/walle
 smuyyh/BookReader
-rabbitmq/rabbitmq-tutorials
 hongyangAndroid/okhttputils
 getActivity/AndroidProject
 logisim-evolution/logisim-evolution
@@ -4213,7 +4040,6 @@ zo0r/react-native-push-notification
 vespa-engine/vespa
 guardianproject/haven
 Angel-ML/angel
-fuzhengwei/itstack-demo-design
 527515025/springBoot
 gzu-liyujiang/AndroidPicker
 raphw/byte-buddy
@@ -4261,7 +4087,6 @@ apache/iotdb
 koush/ion
 graphql-java/graphql-java
 apache/incubator-kie-drools
-ityouknow/spring-cloud-examples
 auth0/java-jwt
 freeok/so-novel
 google/grafika
@@ -4295,7 +4120,6 @@ jeequan/jeepay
 springfox/springfox
 liyifeng1994/ssm
 prolificinteractive/material-calendarview
-youtube/api-samples
 journeyapps/zxing-android-embedded
 JSQLParser/JSqlParser
 antoniolg/androidmvp
@@ -4327,7 +4151,6 @@ jpush/aurora-imui
 Devlight/InfiniteCycleViewPager
 ZHENFENG13/spring-boot-projects
 houbb/sensitive-word
-ddd-by-examples/library
 springside/springside4
 crazycodeboy/react-native-splash-screen
 JakeWharton/u2020
@@ -4367,7 +4190,6 @@ apache/groovy
 jindrapetrik/jpexs-decompiler
 socketio/socket.io-client-java
 facebookarchive/rebound
-spring-projects/spring-data-examples
 apache/dubbo-spring-boot-project
 rubenlagus/TelegramBots
 coobird/thumbnailator
@@ -4387,7 +4209,6 @@ diffplug/spotless
 XRecyclerView/XRecyclerView
 remkop/picocli
 mybatis/generator
-dunwu/db-tutorial
 TGX-Android/Telegram-X
 Doikki/DKVideoPlayer
 runelite/runelite
@@ -4417,7 +4238,6 @@ hustcc/JS-Sorting-Algorithm
 Clans/FloatingActionButton
 brianfrankcooper/YCSB
 oshi/oshi
-android/views-widgets-samples
 gsantner/markor
 zhanglei-workspace/shopping-management-system
 killme2008/aviatorscript
@@ -4444,7 +4264,6 @@ jankotek/mapdb
 Sayi/poi-tl
 Trinea/android-common
 yipianfengye/android-zxingLibrary
-javastacks/spring-boot-best-practice
 youlookwhat/CloudReader
 rubensousa/GravitySnapHelper
 DingMouRen/LayoutManagerGroup
@@ -4462,7 +4281,6 @@ react-native-config/react-native-config
 Devlight/NavigationTabBar
 react-native-webrtc/react-native-webrtc
 orientechnologies/orientdb
-amitshekhariitbhu/RxJava2-Android-Samples
 DiUS/java-faker
 traex/RippleEffect
 Ramotion/folding-cell-android
@@ -4470,12 +4288,10 @@ fuzhengwei/small-spring
 cglib/cglib
 reactive-streams/reactive-streams-jvm
 angryip/ipscan
-mock-server/mockserver
 spring-cloud/spring-cloud-gateway
 mcxiaoke/packer-ng-plugin
 micrometer-metrics/micrometer
 ageerle/ruoyi-ai
-Threekiii/Awesome-POC
 andkulikov/Transitions-Everywhere
 claritylab/lucida
 zhkl0228/unidbg
@@ -4488,7 +4304,6 @@ BoCloud/folib
 saiwu-bigkoo/Android-ConvenientBanner
 oracle/opengrok
 nisrulz/android-tips-tricks
-zq2599/blog_demos
 kyleduo/SwitchButton
 zlt2000/microservices-platform
 dromara/dynamic-tp
@@ -4550,7 +4365,6 @@ jacoco/jacoco
 HotBitmapGG/bilibili-android-client
 nICEnnnnnnnLee/BilibiliDown
 JakeWharton/NineOldAndroids
-water8394/flink-recommandSystem-demo
 Freeyourgadget/Gadgetbridge
 Meituan-Dianping/Robust
 flutter-webrtc/flutter-webrtc
@@ -4579,7 +4393,6 @@ bingoogolapple/BGARefreshLayout-Android
 failsafe-lib/failsafe
 google/open-location-code
 apache/streampark
-brianway/java-learning
 bjmashibing/InternetArchitect
 geoserver/geoserver
 mcxiaoke/android-volley
@@ -4593,7 +4406,6 @@ torakiki/pdfsam
 aporter/coursera-android
 microsoft/malmo
 nining377/dolby_beta
-mybatis/spring-boot-starter
 JabRef/jabref
 apache/fory
 zendesk/maxwell
@@ -4667,10 +4479,8 @@ promeG/TinyPinyin
 JoanZapata/android-iconify
 rengwuxian/RxJavaSamples
 sofastack/sofa-rpc
-VaughnVernon/IDDD_Samples
 amirzaidi/Launcher3
 bluelinelabs/Conductor
-databricks/learning-spark
 JavaNoober/BackgroundLibrary
 Exrick/xboot
 alibaba/jstorm
@@ -4702,7 +4512,6 @@ mpusher/mpush
 zhpanvip/BannerViewPager
 tchiotludo/akhq
 apache/kylin
-rbmonster/learning-note
 lygttpod/SuperTextView
 CameraKit/blurkit-android
 Ereza/CustomActivityOnCrash
@@ -4715,7 +4524,6 @@ andOTP/andOTP
 emanuele-f/PCAPdroid
 Netflix/maestro
 coderbruis/JavaSourceCodeLearning
-ethanhua/Skeleton
 stfalcon-studio/ChatKit
 lihangleo2/ShadowLayout
 willowtreeapps/spruce-android
@@ -4740,7 +4548,6 @@ dropbox/hackpad
 Mojang/brigadier
 dromara/liteflow
 fyhertz/libstreaming
-1024-lab/smart-admin
 yangfuhai/ASimpleCache
 google/rejoiner
 anggrayudi/android-hidden-api
@@ -4763,7 +4570,6 @@ hmkcode/Android
 googlemaps/android-maps-utils
 WVector/AppUpdate
 tyrantgit/ExplosionField
-vert-x3/vertx-examples
 cSploit/android
 kikoso/android-stackblur
 apache/logging-log4j2
@@ -4772,7 +4578,6 @@ davideas/FlexibleAdapter
 dongjunkun/DropDownMenu
 LinShunKang/MyPerf4J
 JakeWharton/ThreeTenABP
-code4craft/netty-learning
 bilibili/MagicaSakura
 AxonFramework/AxonFramework
 dariuszseweryn/RxAndroidBle
@@ -4903,10 +4708,8 @@ internetarchive/heritrix3
 apache/paimon
 oracle/visualvm
 bluelinelabs/LoganSquare
-facebookarchive/network-connection-class
 evrencoskun/TableView
 bilibili/boxing
-BruceEckel/OnJava8-Examples
 Skykai521/StickerCamera
 docker-java/docker-java
 smartloli/EFAK
@@ -4933,7 +4736,6 @@ guolindev/booksource
 JackyAndroid/AndroidTVLauncher
 airbnb/native-navigation
 requery/requery
-szerhusenBC/jwt-spring-security-demo
 egzosn/pay-java-parent
 yipianfengye/android-adDialog
 CrawlScript/WebCollector
@@ -4947,19 +4749,16 @@ soot-oss/soot
 wushuo894/ani-rss
 AnyListen/tools-ocr
 card-io/card.io-Android-SDK
-RameshMF/spring-boot-tutorial
 Tencent/soter
 boylegu/SpringBoot-vue
 Pugmatt/BedrockConnect
 zhegexiaohuozi/SeimiCrawler
 willowtreeapps/Hyperion-Android
 IzzelAliz/Arclight
-novoda/android-demos
 phith0n/JavaThings
 davidfantasy/mybatis-plus-generator-ui
 apache/bookkeeper
 GcsSloop/rclayout
-NanowarOfSteel/HelloWorld
 armcha/Space-Navigation-View
 GlowstoneMC/Glowstone
 kaikramer/keystore-explorer
@@ -4986,7 +4785,6 @@ lyrric/seckill
 florent37/ExpansionPanel
 javahongxi/whatsmars
 REAndroid/APKEditor
-googlesamples/android-testing-templates
 konmik/nucleus
 pengrad/java-telegram-bot-api
 ysc/QuestionAnsweringSystem
@@ -5021,13 +4819,11 @@ youseries/urule
 Yalantis/StarWars.Android
 felHR85/UsbSerial
 psal/anonymouth
-YeautyYE/netty-websocket-spring-boot-starter
 jar-analyzer/jar-analyzer
 sparrowwallet/sparrow
 nashtech-garage/yas
 fabric8io/docker-maven-plugin
 liaoinstan/SpringView
-dunwu/java-tutorial
 dromara/forest
 evant/binding-collection-adapter
 spring-projects/spring-session
@@ -5035,7 +4831,6 @@ rememberber/MooTool
 gre/gl-react-native-v2
 w2016561536/android_virtual_cam
 Wizcorp/phonegap-facebook-plugin
-mercyblitz/thinking-in-spring-boot-samples
 recruit-lifestyle/WaveSwipeRefreshLayout
 tiann/Leoric
 apache/servicecomb-pack
@@ -5046,7 +4841,6 @@ fanrunqi/MaterialLogin
 dromara/raincat
 Luosunce/material-design-data
 selenide/selenide
-LianjiaTech/retrofit-spring-boot-starter
 detro/ghostdriver
 totond/TextPathView
 ZhaoKaiQiang/KLog
@@ -5063,8 +4857,6 @@ turms-im/turms
 Discord4J/Discord4J
 dromara/Jpom
 Cleveroad/AdaptiveTableLayout
-waylau/netty-4-user-guide-demos
-react-native-community/react-native-template-typescript
 0x727/SpringBootExploit
 bit4woo/knife
 joyoyao/superCleanMaster
@@ -5081,7 +4873,6 @@ bramp/ffmpeg-cli-wrapper
 Kaopiz/android-segmented-control
 Ramotion/circle-menu-android
 x-ream/sqli
-jberkel/sms-backup-plus
 parse-community/Parse-SDK-Android
 jchambers/pushy
 airbnb/AirMapView
@@ -5090,7 +4881,6 @@ JoanZapata/base-adapter-helper
 f0ng/captcha-killer-modified
 kanwangzjm/funiture
 FJ-OMS/oms-erp
-GoogleCloudPlatform/java-docs-samples
 mcxtzhang/SuspensionIndexBar
 fr3ts0n/AndrOBD
 zhp8341/flink-streaming-platform-web
@@ -5098,16 +4888,13 @@ wangdan/AisenWeiBo
 Skykai521/ECTranslation
 BroadleafCommerce/BroadleafCommerce
 in28minutes/spring-microservices
-alidili/Demos
 videlalvaro/gifsockets
 neerazz/FAANG
 callicoder/spring-security-react-ant-design-polls-app
 continew-org/continew-admin
 devaige/DatePicker
-hitherejoe/Android-Boilerplate
 pinterest/secor
 linger1216/labelview
-learning-zone/java-basics
 wingjay/jianshi
 openairplay/open-airplay
 spring-projects/spring-data-redis
@@ -5120,7 +4907,6 @@ neo4j-contrib/neo4j-apoc-procedures
 apache/polaris
 krlvm/PowerTunnel-Android
 w3c/epubcheck
-googleads/googleads-mobile-android-examples
 BiglySoftware/BiglyBT
 dcevm/dcevm
 signalapp/libsignal-protocol-java
@@ -5129,12 +4915,10 @@ federicodotta/Brida
 romainpiel/Titanic
 JosephZhu1983/java-common-mistakes
 dromara/MaxKey
-alibaba/testable-mock
 xmuSistone/VegaLayoutManager
 Kelin-Hong/MVVMLight
 eclipse/openvsx
 scwang90/MultiWaveHeader
-RichardWarburton/java-8-lambdas-exercises
 linyimin0812/spring-startup-analyzer
 semicons/java_oci_manage
 felipecsl/AsymmetricGridView
@@ -5147,7 +4931,6 @@ rohitghatol/spring-boot-microservices
 siaorg/sia-task
 in28minutes/master-spring-and-spring-boot
 goldmansachs/gs-collections
-ZHENFENG13/ssm-demo
 lyft/scissors
 GIScience/openrouteservice
 pinterest/teletraan
@@ -5227,8 +5010,6 @@ wagiro/BurpBounty
 pakerfeldt/android-viewflow
 newbiechen1024/NovelReader
 tuesda/CircleRefreshLayout
-android/connectivity-samples
-mattia-battiston/clean-architecture-example
 npgall/cqengine
 jooby-project/jooby
 guchengwuyue/yshopmall
@@ -5242,7 +5023,6 @@ Netflix/genie
 samlss/Broccoli
 senzhk/ADBKeyBoard
 sunfusheng/GlideImageView
-pascal-lab/Tai-e
 medyo/Fancybuttons
 xianrendzw/EasyReport
 bephrem1/interviewpen
@@ -5252,14 +5032,12 @@ leochuan/ViewPagerLayoutManager
 torodb/stampede
 beefe/react-native-picker
 eschao/android-PageFlip
-nisrulz/android-examples
 ImmortalZ/TransitionHelper
 ladingwu/dimens_sw
 yangchaojiang/ZoomPreviewPicture-
 jplag/JPlag
 kairosdb/kairosdb
 stephentuso/welcome-android
-facebook/screenshot-tests-for-android
 sleeyax/burp-awesome-tls
 ParkSangGwon/TedPermission
 mikepenz/LollipopShowcase
@@ -5280,7 +5058,6 @@ evollu/react-native-fcm
 88250/solo
 liuguangqiang/SwipeBack
 Qihoo360/hbox
-spring-projects/spring-security-samples
 Xed-Editor/Xed-Editor
 BakerJQ/Android-InfiniteCards
 ofdrw/ofdrw
@@ -5295,7 +5072,6 @@ kiegroup/jbpm
 j3ers3/Hello-Java-Sec
 klinker24/talon-twitter-holo
 hongyangAndroid/AndroidChangeSkin
-roncoo/spring-boot-demo
 fossasia/neurolab-android
 stacksimplify/aws-eks-kubernetes-masterclass
 spring-guides/tut-spring-security-and-angular-js
@@ -5352,7 +5128,6 @@ bytedance/bitsail
 qyxxjd/MultipleStatusView
 MorphiaOrg/morphia
 soabase/exhibitor
-JeffLi1993/java-core-learning-example
 misakuo/3dTagCloudAndroid
 itext/itextpdf
 SmartBear/soapui
@@ -5369,7 +5144,6 @@ Trinea/android-auto-scroll-view-pager
 wenmingvs/NotifyUtil
 Stericson/RootTools
 florent37/GlidePalette
-aosp-mirror/platform_frameworks_support
 smarques84/MockLocationDetector
 polardb/polardbx-sql
 dinuscxj/RecyclerRefreshLayout
@@ -5472,7 +5246,6 @@ ShamylZakariya/FlyoutMenus
 goweii/AnyLayer
 AnthonyFermin/DropDownView
 yellowcath/VideoProcessor
-spring-cloud/spring-cloud-stream-samples
 niefy/wx-api
 mitallast/diablo-js
 plan-player-analytics/Plan
@@ -5491,7 +5264,6 @@ imbryk/LoopingViewPager
 good-life/PushTalk
 DragonetMC/DragonProxy
 android-notes/androidScreenShare
-apache/shardingsphere-example
 MorpheApp/morphe-patches
 mikehodz/HorizontalWheelView
 xiaolyuh/layering-cache
@@ -5503,7 +5275,6 @@ segler-alex/RadioDroid
 BlueMor/DragLayout
 MangoAutomation/modbus4j
 codemybrainsout/ahoy-onboarding
-smltq/spring-boot-demo
 Cloudslab/cloudsim
 activej/activej
 yeqifu/warehouse
@@ -5511,7 +5282,6 @@ lukas-krecan/JsonUnit
 Tosencen/XMBOX
 lucasr/smoothie
 AthenZ/athenz
-playgameservices/android-basic-samples
 wuyinxian124/nettybook2
 vaadin/hilla
 yueyi2019/online-taxi
@@ -5558,7 +5328,6 @@ koush/UrlImageViewHelper
 awslabs/aws-saas-boost
 zhoubowen-sky/LingDong
 zalando/nakadi
-binarywang/weixin-java-pay-demo
 Maskhe/FastjsonScan
 xnx3/templatespider
 tomighty/tomighty
@@ -5594,7 +5363,6 @@ karonl/InDoorSurfaceView
 jpardogo/ListBuddies
 glomadrian/material-code-input
 Blankeer/MDWechat
-5A59/android-training
 wuhenzhizao/android-titlebar
 zebrunner/carina
 cBioPortal/cbioportal
@@ -5630,12 +5398,10 @@ spring-projects/spring-tools
 he2121/MyRPCFromZero
 rometools/rome
 jaygajera17/E-commerce-project-springBoot
-Puliczek/CVE-2021-44228-PoC-log4j-bypass-words
 google/android-arscblamer
 TogetherOS/cicada
 xdmdcp/hospital
 threema-ch/threema-android
-android-cn/android-open-project-demo
 cheese10yun/github-project-management
 apache/datasketches-java
 bluejoe2008/openwebflow
@@ -5660,7 +5426,6 @@ mezz/JustEnoughItems
 ganfra/MaterialSpinner
 superblaubeere27/obfuscator
 linkedin/PalDB
-MaxiHuHe04/iTunes-Backup-Explorer
 crashub/crash
 XndroidDev/Xndroid
 fishwjy/VideoCompressor
@@ -5687,7 +5452,6 @@ matteobaccan/owner
 Getshell/Mshell
 uniVocity/univocity-parsers
 githubwing/MVPHelper
-mitchtabian/Android-Instagram-Clone
 OWASP/java-html-sanitizer
 wujingchao/SimpleTagImageView
 xunlu129/teriteri-backend
@@ -5705,7 +5469,6 @@ jaychang0917/SimpleRecyclerView
 axelor/axelor-open-suite
 Rapsssito/react-native-background-actions
 caozongpeng/SpringBootBlog
-nathanmarz/storm-starter
 szvone/vmqApk
 LGH1996/TapClick
 java110/MicroCommunity
@@ -5726,14 +5489,12 @@ OpenGamma/Strata
 Quatja/Vorolay
 PatilShreyas/MaterialDialog-Android
 askerov/DynamicGrid
-realguoshuai/hadoop_study
 LoveMyOrange/ActivitiSourceCode
 ByteByteGoHq/coding-interview-patterns
 googlearchive/android-BluetoothLeGatt
 PureWriter/ToastCompat
 lightningMan/flash-netty
 lionsoul2014/jcseg
-amigoscode/spring-data-jpa-course
 jfaster/mango
 operator-framework/java-operator-sdk
 linisme/SlimAdapter
@@ -5746,7 +5507,6 @@ apache/mina
 RAOE/show-videos
 yizhaorong/intranet_app_manager
 jshiell/checkstyle-idea
-neo4j-labs/neosemantics
 Meetic/MaryPopup
 imablanco/Zoomy
 tensorflow/java
@@ -5789,7 +5549,6 @@ Freelander/Elephant
 Aspsine/MultiThreadDownload
 Dimowner/AudioRecorder
 cowtowncoder/java-uuid-generator
-kaiwaehner/kafka-streams-machine-learning-examples
 eclipse-color-theme/eclipse-color-theme
 MasayukiSuda/ExoPlayerFilter
 gf-huanchupk/SpringBootLearning
@@ -5799,7 +5558,6 @@ EngineHub/WorldGuard
 larsgeorge/hbase-book
 GcsSloop/diycode
 dromara/dante-cloud
-paulc4/microservices-demo
 PlayPro/CoreProtect
 Jude95/RollViewPager
 google/mr4c
@@ -5840,7 +5598,6 @@ nitrite/nitrite-java
 paulfitz/daff
 GrapheneOS/PdfViewer
 facebookarchive/nifty
-aws-samples/aws-big-data-blog
 ChinaLHR/JavaQuarkBBS
 escline/InstallCert
 hanhailong/FlowTag
@@ -5859,7 +5616,6 @@ eson15/Javaweb_bookstore
 luoyesiqiu/dpt-shell
 hardcore-sushi/DroidFS
 kongnanlive/SearchMenuAnim
-saturnism/grpc-by-example-java
 hieuvp/react-native-fingerprint-scanner
 ac-pm/SSLUnpinning_Xposed
 nccgroup/AutoRepeater
@@ -5870,7 +5626,6 @@ PeachBlossom/treader
 Jamling/SmartIM4IntelliJ
 oubowu/StickyItemDecoration
 RichardGong/PlayWithCompiler
-smanikandan14/Volley-demo
 linkedin/coral
 jenetics/jenetics
 apache/causeway
@@ -5887,9 +5642,7 @@ emmaguy/clean-status-bar
 JakeWharton/DrawerBehavior
 rahulrj/YahooNewsOnboarding
 bilde2910/Hauk
-all4you/sentinel-tutorial
 owlcs/owlapi
-mercyblitz/geekbang-lessons
 DayorNight/BLCS
 alibaba/SmartEngine
 kirill-grouchnikov/radiance
@@ -5946,7 +5699,6 @@ dannytiehui/androidpn
 hongyangAndroid/MagicViewPager
 DingProg/Makeup
 mahonelau/-kykms
-navinreddy20/spring6-course
 zzz40500/Android-PullToNextLayout
 dtrung98/MusicPlayer
 datavane/jobx
@@ -5954,19 +5706,16 @@ manadream/AndroidProxySetter
 gessnerfl/fake-smtp-server
 TimefoldAI/timefold-quickstarts
 codezjx/AndLinker
-dmilicic/android-clean-sample-app
 daniel-cues/NMapGUI
 stefvanschie/IF
 wangjiegulu/AndroidBucket
 jenkinsci/docker-plugin
-amigoscode/spring-boot-security-course
 XiaoMi/shepher
 sendgrid/sendgrid-java
 Acmesec/Sylas
 Karumi/HeaderRecyclerView
 FutureMind/recycler-fast-scroll
 AReallyGoodName/OfflineReverseGeocode
-asc-lab/micronaut-microservices-poc
 fourbrother/AXMLEditor
 vivian8725118/CardView
 googlesamples/android-play-publisher-api
@@ -5974,9 +5723,7 @@ ekoz/kbase-doc
 wistbean/manong-ssm
 LandGrey/copagent
 BerserkerHercules/OfficeAutomatic-System
-CodelyTV/java-ddd-example
 grandstaish/paperparcel
-cucumber/cucumber-jvm-starter-maven-java
 victordiaz/PHONK
 bujiio/buji-pac4j
 shalskar/PeekAndPop
@@ -6002,7 +5749,6 @@ qtc-de/beanshooter
 lijiahangmax/orion-ops
 ververica/flink-sql-gateway
 ZieIony/MaterialRecents
-wimdeblauwe/error-handling-spring-boot-starter
 yaxim-org/yaxim
 Doist/RecyclerViewExtensions
 FirebaseExtended/mlkit-material-android
@@ -6026,7 +5772,6 @@ angebagui/medium-textview
 insideapp-oss/sonar-flutter
 xplodwild/android_packages_apps_Focal
 alibaba/innodb-java-reader
-hapifhir/hapi-fhir-jpaserver-starter
 fr1kin/ForgeHax
 brunocleite/spring-boot-exception-handling
 xuxueli/xxl-mq
@@ -6046,7 +5791,6 @@ dangdangdotcom/config-toolkit
 davideas/FlipView
 sitemesh/sitemesh3
 wosyingjun/beauty_ssm_cluster
-hantsy/spring-webmvc-jwt-sample
 FinVolution/pmq
 JavatoDev-com/internet-banking-concept-microservices
 yangchong211/YCSlideLayout
@@ -6074,11 +5818,8 @@ fangx/ZhiHuMVP
 T-Spoon/Traceur
 jchambers/java-otp
 google/allocation-instrumenter
-learning-zone/spring-boot-basics
 AlexMofer/ProjectX
 patloew/RxLocation
-ethjava/web3j-sample
-spring-projects-experimental/spring-boot-migrator
 stoicflame/enunciate
 delight-im/Faceless
 routerkeygen/routerkeygenAndroid
@@ -6095,7 +5836,6 @@ DomHeal/JavaFX-Chat
 krishnarb3/Popview-Android
 Jaouan/CompoundLayout
 SilenceDut/ExpandableLayout
-spring-attic/spring-hadoop-samples
 mar-v-in/ArtHook
 Multibit-Legacy/multibit
 wuapnjie/SuspensionBar
@@ -6161,7 +5901,6 @@ flamingock/flamingock-java
 venmo/tooltip-view
 Diffey/RxZhihuPager
 anyrtcIO-Community/AR-RTMPC-Android
-linux-china/chatgpt-spring-boot-starter
 yarolegovich/MaterialPreferences
 florent37/RxRetroJsoup
 SinaVDDeveloper/sinavideo_playersdk
@@ -6213,7 +5952,6 @@ jenly1314/CircleProgressView
 spring-petclinic/spring-framework-petclinic
 xiaoyuanhost/TranspondSms
 dogtagpki/pki
-springtestdbunit/spring-test-dbunit
 jaxio/celerio-angular-quickstart
 osalvador/ReplicaDB
 apache/commons-codec
@@ -6232,15 +5970,12 @@ fashare2015/StackLayout
 PacktPublishing/Hands-On-Microservices-with-Spring-Boot-and-Spring-Cloud
 phishman3579/android-heart-rate-monitor
 lijiankun24/ShadowLayout
-ddd-by-examples/event-source-cqrs-sample
 opendaylight/controller
 gautamgupta/Simple-Android-OCR
 sealedtx/java-youtube-downloader
 farmerbb/SecondScreen
 milvus-io/milvus-sdk-java
-heibaiying/spring-samples-for-all
 SonarSonic/DrawingBotV3
-StevenByle/Android-Material-Themes-Demo
 spring-attic/spring-xd
 Java-Bom/ReadingRecord
 ben-manes/concurrentlinkedhashmap
@@ -6274,7 +6009,6 @@ elbbbird/ESSocialSDK
 fuzhengwei/guide-idea-plugin
 BelkaLab/Android-Toggle-Switch
 z2p/sweetPotato
-aalansehaiyang/Lock-Learning
 jayrambhia/CropperNoCropper
 getActivity/DeviceCompat
 kohlschutter/junixsocket
@@ -6307,12 +6041,10 @@ fuhoujun/e
 xiaoyao1991/presto-ethereum
 MenoData/Time4J
 Itiviti/simple-slack-api
-amfoss/android-workshop-summer-2018
 ptrd/kwik
 Viscent/javamtia
 raeleus/skin-composer
 CyanogenMod/android_packages_apps_Trebuchet
-dlew/rxjava-multiple-sources-sample
 subclipse/subclipse
 jmockit/jmockit1
 google/mug
@@ -6344,14 +6076,12 @@ ws123/VoiceLine
 jclouds/legacy-jclouds
 yingLanNull/CircleAlarmTimerView
 neoedmund/neoeedit
-vaadin/dashboard-demo
 mikaelgrev/miglayout
 tanhuang2016/RedisFX
 Evolveum/midpoint
 DraqueT/PolyGlot
 jprante/elasticsearch-knapsack
 roscopeco/jasm
-androidthings/sample-googleassistant
 sunfusheng/In-depthStudy
 al3xtjames/ghidra-firmware-utils
 nuuneoi/StatedFragment
@@ -6359,11 +6089,9 @@ kyze8439690/v2ex-daily-android
 maxwai/NClientV3
 BasicAirData/GPSLogger
 codingXiaxw/ssm2
-yangyichao-mango/flink-study
 imkarl/WaitView
 tunnelvisionlabs/antlr4cs
 dromara/warm-flow
-bobocode-projects/java-fundamentals-exercises
 sealtalk/sealtalk-android
 longfeizheng/blockchain-java
 gchq/stroom
@@ -6376,7 +6104,6 @@ hengyunabc/redis-id-generator
 512team/dhorse
 square/burst
 jantent/Jantent
-apache/camel-examples
 Frank-Zhu/TriangleRectangleLabelView
 cosen1024/community
 google/walt
@@ -6414,7 +6141,6 @@ quanke/design-pattern-java-source-code
 wanglu1209/PhotoViewer
 zion223/NeteaseCloudMusic
 Maxi-Mao/ChatDemo
-spring-cloud-samples/customers-stores
 ericwlange/AndroidJSCore
 FreeeBird/hotel
 dji-sdk/Mobile-SDK-Android-V5
@@ -6430,14 +6156,11 @@ FlyJingFish/OpenImage
 NordicSemiconductor/Android-nRF-Mesh-Library
 amitshekhariitbhu/AndroidTensorFlowMNISTExample
 Yarikx/reductor
-gupaoedu-tom/spring5-samples
 huangwm1984/AndroidBase
 Xposed-Modules-Repo/com.github.dan.nostoragerestrict
-Ardesco/Selenium-Maven-Template
 SmartisanTech/packages_apps_OneStep
 ZTFtrue/MonsterMusic
 miguelbcr/RxPaparazzo
-Xposed-Modules-Repo/com.example.vcam
 PreviousAlone/Nnngram
 myabc/markdownj
 devadvance/circularseekbar
@@ -6468,9 +6191,7 @@ Gwindow/WhatAndroid
 dsaltares/ashley-superjumper
 xujiaji/DMView2
 yuyuanweb/mianshiya-plugin
-TeamDev-IP/JxBrowser-Examples
 LiushuiXiaoxia/AndroidHttp
-stsiushkevich/learn-reactjs
 williambl/blockblockdevice
 Virtuoel/Pehkui
 hanxt/boot-launch
@@ -6486,7 +6207,6 @@ borovikovd/realworld-backend-spring-ddd
 chaoticbob/AndroidWatchFaces
 ashLikun/JCVideoPlayer
 PacktPublishing/Practical-Design-Patterns-for-Java-Developers
-graalvm/graal-languages-demos
 kaknazaveshtakipishi/PermissionEverywhere
 fangxiaogang/WanAndroidxg
 rahulrj/WinKal
@@ -6496,7 +6216,6 @@ angryziber/simple-java
 muyinchen/Java-programming-methodology-Rxjava-articles
 cqyijifu/OpenFalcon-SuitAgent
 w2ji/VitaminSaber
-ibm-messaging/event-streams-samples
 monkeymq/jgossip
 optimjie/bytedance-youthcamp-search-engine
 liuguangli/MyTaxi
@@ -6532,13 +6251,9 @@ xuexiangjys/XUpdateAPI
 dustlight-cn/auth
 OneDrive/onedrive-picker-android
 HappyMiao/QrCodeScan
-kite-sdk/kite-examples
-benwilcock/spring-cloud-stream-demo
-jclouds/jclouds-examples
 woshiwzy/opencv_wechat_qr
 akshitagit/JAVA
 CodinGame/SpringChallenge2022
-sumanentc/spring-webflux-reactive-rest-api-example
 BlackDeluxeCat/MI2-Utilities-Java
 SpoonLabs/coming
 giteecode/oaSystemPublic
@@ -6558,7 +6273,6 @@ Mahfa/DayNightSwitch
 Kloping/qqpd-bot-java
 yangxuechen/LostAndFound
 Noahs-ARK/semafor
-in28minutes/pcf-crash-course-with-spring-boot
 GishReloaded/Gish-Code-1.12.2
 jiaolong1021/ElementPlugin
 protyposis/Spectaculum
@@ -6576,7 +6290,6 @@ Loreinator/Shuffle-Move
 pixelsdb/pixels-trino
 alibaba/druid-ha
 zipingdong/datax-web
-cjqCN/spring-statemachine-learning
 livroandroid/5ed
 dsyer/spring-boot-legacy
 gridgo/gridgo
@@ -6588,8 +6301,6 @@ patrickkulling/Air-Mobile-Extensions
 gorbin/ASNETutorial
 henrichg/PhoneProfilesPlusExtender
 joshlong-attic/service-registration-and-discovery
-dev-labs-bg/fullscreen-video-view
-QianmiOpen/spring-boot-starter-rocketmq
 Flowit-Game/Flowit
 Ajay191191/Opencv-Face-Recognition
 LuckSiege/EasyIndicator
@@ -6597,11 +6308,9 @@ PKUFlyingPig/MIT6.031-software-construction
 tf2jaguar/community-management-system
 philipphecht/react-native-doc-viewer
 jeff-leo/SpikeSystem
-OlgaMaciaszek/spring-cloud-netflix-demo
 jonasrottmann/realm-browser
 maziar-gh/MaterialX
 yujinzhao123/DoubleHeadedDragonBar
-sbtqa/tutorials
 GGsnake/ShopMall
 AkshayAnil1080/DSA
 dora4/dora
@@ -6655,7 +6364,6 @@ Dheeraj22/Professor_DK
 zh-wang/YWeatherGetter4a
 benbahrenburg/benCoding.AlarmManager
 alphamu/android-MVVM-DataBinding-RecyclerViewExample
-zhoujingweb3/web3j-eth-sample
 jdbc-observations/datasource-micrometer
 jecelyin/buildprop
 Peefy/CompileDragonBook
@@ -6670,14 +6378,10 @@ sofastack/sofa-dashboard
 znsio/teswiz
 nova-video-player/aos-Video
 andforce/SmartZPN
-waimifeier/hikvision-spring-boot-starter
 r5v9/persist
-qingmei2/Sample_dagger2
 alexive/visual-goodies
 travijuu/NumberPicker
-skeeto/sample-java-project
 DitriXNew/EDT-MCP
-bmob/bmob-android-demo-thirdpartylogin
 springframeworkguru/spring-7-webapp
 ppamorim/RecyclerRenderers
 ckdevrel/IconColorChanger
@@ -6695,7 +6399,6 @@ allgood/OpenCV-3.1.0-Android
 CodeRayZhang/Cloud-Note
 nerzhul/ncsms-android
 electronic-pig/gkvr_system_backend
-Kickflip/kickflip-android-example
 Drumber/RemoteLight
 1596941391qq/pokerogue-android
 aws-cloudformation/cloudformation-resource-schema
@@ -6713,8 +6416,6 @@ Sable/jasmin
 landtanin/StudentAttendanceCheck
 http-kit/scale-clojure-web-app
 polok/RouteDrawer
-TechPrimers/spring-boot-graphql-query-example
-hstrada/workshop-rocketseat-stylert-boilerplate
 qgis/QGIS-Android
 pj567/ShimmerShadowLayout
 microsphere-projects/microsphere-java
@@ -6759,7 +6460,6 @@ mmmlllnnn/com.mln.momoxposed
 wanglaohushiwo/StickyHeaderFooterRecyclerView
 LoranWong/Android_custom_ratingbarview
 dantmnf/PseudoDCDimming
-heervisscher/htl-examples
 mkremins/fanciful
 zhongxunking/bekit
 folofse/androw
@@ -6811,10 +6511,8 @@ bramp/unsafe
 code4wt/JSONParser
 don/cordova-filechooser
 talut/react-native-picker-module
-ausboyue/Okhttp-Multiple-Thread-Download-Demo
 aau-network-security/HosTaGe
 igor-suhorukov/openstreetmap_h3
-doit-now/software-testing
 ajoberstar/gradle-git-publish
 pfalstad/ripplegl
 SmithGao/rxjava_retrofit3.0_okhttp
@@ -6826,7 +6524,6 @@ alexzaitsev/meter-number-picker
 ashwanthkumar/gocd-build-github-pull-requests
 mark-ypq/GPSHook
 itoshkov/nand2tetris-emu
-ivangrov/Android-Deep-Learning-with-OpenCV
 kongzue/KongzueUpdateSDK
 tedyoung/kid-bank
 datumbox/NaiveBayesClassifier
@@ -6834,7 +6531,6 @@ l0y/learnjava6e
 bikashthapa01/firebase-authentication-android
 wo4li2wang/MSpider
 fnk0/Android-Wear-Codelab
-mhyeon-lee/spring-data-sample-codes
 ccdr4gon/Dr4gonSword
 mars-ma/ApkSecure
 CUTR-at-USF/gtfs-realtime-validator
@@ -6854,10 +6550,8 @@ gabrieldim/Advanced-Programming
 FlutterAds/flutter_gromore_ads
 michaelliao/warpdb
 wikibook/spring-security
-jhipster/jhipster-sample-app-vuejs
 arquillian/arquillian-graphene
 particleincell/Starfish
-sachin1092/Lollipop-AppCompat-Widgets-Skeleton
 Tencent-YouTu/android_sdk
 tasomaniac/DelayedProgress
 codeGoogler/MyGreatPalyerVideo
@@ -6865,7 +6559,6 @@ deepimagej/deepimagej-plugin
 mguymon/model-citizen
 mizutori/AndroidLocationStarterKit
 sonatype/nexus
-aaja/architect-demo
 bawaviki/youtube-dl-android
 cescoffier/reactive-systems-in-java
 ariashirazi/InstaBrowser
@@ -6899,11 +6592,9 @@ Murgio/Genetic-Algorithm-Montage
 Berkeley-CS61B/lectureCode-sp17
 Angular2Guy/Angular2AndJavaEE
 haticeerturk/scoper
-androidthings/sample-usbenum
 lordlothar99/strategy-spring-security-acl
 substrait-io/substrait-java
 ycf1998/money-pos
-auth0-samples/auth0-spring-security5-api-sample
 quarkiverse/quarkus-roq
 justin-taylor/Android-Desktop-Remote-Control
 charlieysx/CBRatingBar
@@ -6914,7 +6605,6 @@ juzi888999/signature
 tobyweston/simple-excel
 flyhero/easy-log
 vaccovecrana/frag-falcon
-ZhongyangMA/webflux-streaming-demo
 michaelliao/jerrymouse
 boulder-on/JPassport
 vulhub/Apereo-CAS-Attack
@@ -6928,7 +6618,6 @@ wushujames/kafka-mysql-connector
 Piasy/YaMvp
 leonardoanalista/java2word
 TC999/ghidra-chinese
-guojunustb/sample-of-Android-week-view
 leizhang5s/ssm_JDlike
 Morlok8k/MinecraftLandGenerator
 Coder-ACJHP/Hotel-Properties-Management-System
