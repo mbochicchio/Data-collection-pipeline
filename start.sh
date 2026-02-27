@@ -62,7 +62,7 @@ if [ -f "$LOCAL_DB" ]; then
     docker run --rm \
         -v "$(pwd)/data:/source" \
         -v "$VOLUME_NAME:/dest" \
-        alpine sh -c "cp /source/pipeline.duckdb /dest/pipeline.duckdb && chmod 666 /dest/pipeline.duckdb"
+        alpine sh -c "cp /source/pipeline.duckdb /dest/pipeline.duckdb && chmod -R 777 /dest"
     echo "      Copied $LOCAL_DB → volume."
 else
     echo "      WARNING: No local database found at $LOCAL_DB."
