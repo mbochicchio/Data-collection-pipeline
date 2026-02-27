@@ -2,21 +2,14 @@
 # =============================================================================
 # init.sh — Initialize the pipeline for the first time (or after a reset)
 #
-# What it does:
-#   1. Starts postgres and pipeline-db
-#   2. Restores the local backup into pipeline-db (if it exists)
-#   3. Runs airflow-init (db migrate, create admin user, seed projects)
-#   4. Saves a backup of pipeline-db to data/pipeline_backup.sql
-#
 # Usage:
-#   chmod +x init.sh start.sh
+#   chmod +x init.sh start.sh inspect.sh db.sh
 #   ./init.sh
 # =============================================================================
 
 set -e
 
 BACKUP_FILE="./data/pipeline_backup.sql"
-DB_CONTAINER="data-collection-pipeline-pipeline-db-1"
 DB_USER="pipeline"
 DB_NAME="pipeline"
 
@@ -40,6 +33,8 @@ echo ""
 echo "[2/4] Checking for local backup..."
 if [ -f "$BACKUP_FILE" ]; then
     echo "      Restoring backup from $BACKUP_FILE ..."
+    docker compose exec pipeline-db psql -U "$DB_USER" -d postgres -c "DROP DATABASE IF EXISTS $DB_NAME;"
+    docker compose exec pipeline-db psql -U "$DB_USER" -d postgres -c "CREATE DATABASE $DB_NAME;"
     docker compose exec -T pipeline-db psql -U "$DB_USER" -d "$DB_NAME" < "$BACKUP_FILE"
     echo "      Backup restored."
 else

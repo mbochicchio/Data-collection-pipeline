@@ -2,13 +2,6 @@
 # =============================================================================
 # start.sh — Start the Airflow pipeline
 #
-# What it does:
-#   1. Starts pipeline-db and restores the local backup
-#   2. Starts all Airflow services
-#   3. Waits for Ctrl+C or SIGTERM
-#   4. On shutdown: saves a backup of pipeline-db to data/pipeline_backup.sql
-#   5. Stops all containers
-#
 # Usage:
 #   ./start.sh
 # =============================================================================
@@ -19,7 +12,6 @@ BACKUP_FILE="./data/pipeline_backup.sql"
 DB_USER="pipeline"
 DB_NAME="pipeline"
 
-# --- Shutdown handler -------------------------------------------------------
 shutdown() {
     echo ""
     echo "=============================================="
@@ -47,12 +39,12 @@ shutdown() {
 
 trap shutdown SIGINT SIGTERM
 
-# --- Step 1: start pipeline-db and restore backup --------------------------
 echo ""
 echo "=============================================="
 echo "  Pipeline Start"
 echo "=============================================="
 
+# --- Step 1: start pipeline-db and restore backup --------------------------
 echo ""
 echo "[1/2] Starting pipeline-db..."
 docker compose up -d postgres pipeline-db
@@ -64,6 +56,8 @@ echo "      pipeline-db is ready."
 
 if [ -f "$BACKUP_FILE" ]; then
     echo "      Restoring backup from $BACKUP_FILE ..."
+    docker compose exec pipeline-db psql -U "$DB_USER" -d postgres -c "DROP DATABASE IF EXISTS $DB_NAME;"
+    docker compose exec pipeline-db psql -U "$DB_USER" -d postgres -c "CREATE DATABASE $DB_NAME;"
     docker compose exec -T pipeline-db psql -U "$DB_USER" -d "$DB_NAME" < "$BACKUP_FILE"
     echo "      Backup restored."
 else
