@@ -2,17 +2,10 @@
 # =============================================================================
 # inspect.sh — Start pipeline-db locally for inspection (no Airflow)
 #
-# What it does:
-#   1. Starts pipeline-db and restores the local backup
-#   2. Prints connection info for scripts and notebook
-#   3. Waits for Ctrl+C
-#   4. On shutdown: saves a backup and stops the container
-#
 # Usage:
-#   chmod +x inspect.sh
 #   ./inspect.sh
 #   # then in another terminal:
-#   PIPELINE_DB_HOST=localhost PIPELINE_DB_PORT=5434 python scripts/reset_db.py status
+#   ./db.sh status
 # =============================================================================
 
 set -e
@@ -48,6 +41,9 @@ echo "pipeline-db is ready."
 # --- Restore backup ----------------------------------------------------------
 if [ -f "$BACKUP_FILE" ]; then
     echo "Restoring backup from $BACKUP_FILE ..."
+    # Drop and recreate the database to avoid conflicts on re-import
+    docker compose exec pipeline-db psql -U "$DB_USER" -d postgres -c "DROP DATABASE IF EXISTS $DB_NAME;"
+    docker compose exec pipeline-db psql -U "$DB_USER" -d postgres -c "CREATE DATABASE $DB_NAME;"
     docker compose exec -T pipeline-db psql -U "$DB_USER" -d "$DB_NAME" < "$BACKUP_FILE"
     echo "Backup restored."
 else
@@ -59,13 +55,9 @@ echo ""
 echo "=============================================="
 echo "  pipeline-db is running on localhost:5434"
 echo ""
-echo "  Scripts:"
-echo "  PIPELINE_DB_HOST=localhost PIPELINE_DB_PORT=5434 \\"
-echo "    python scripts/reset_db.py status"
-echo ""
-echo "  Notebook:"
-echo "  Set PIPELINE_DB_PORT=5434 in .env or run"
-echo "  the navigator notebook directly."
+echo "  ./db.sh status"
+echo "  ./db.sh reset"
+echo "  ./db.sh reseed"
 echo ""
 echo "  Press Ctrl+C to save backup and stop."
 echo "=============================================="
