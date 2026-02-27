@@ -31,7 +31,7 @@ from pathlib import Path
 from airflow.sdk import BaseOperator
 
 from common.db import get_projects_without_quality_gate, upsert_quality_gate
-from config.settings import DUCKDB_PATH, GITHUB_TOKEN, GITHUB_TOKENS, REPOQUESTER_DIR
+from config.settings import GITHUB_TOKEN, GITHUB_TOKENS, REPOQUESTER_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +47,28 @@ METRIC_COLUMNS = [
     "pull",
     "releases",
 ]
+
+
+def _write_token(work_dir: Path, token: str) -> None:
+    """Inject the GitHub token into RepoQuester's tokens.py."""
+    tokens_path = work_dir / "tokens.py"
+    tokens_path.write_text(
+        f'import os\n'
+        f'root_directory = os.getcwd()\n'
+        f'git_tokens = {{"{token}": "pipeline"}}\n'
+    )
+    logger.debug("GitHub token injected into tokens.py.")
+
+
+def _write_repo_urls(work_dir: Path, pending: list[dict]) -> None:
+    """Write project names to RepoQuester's repo_urls file."""
+    repo_urls_path = work_dir / "repo_urls"
+    with open(repo_urls_path, "w") as f:
+        for project in pending:
+            f.write(project["full_name"] + "\n")
+    logger.info(
+        "Wrote %d project(s) to %s.", len(pending), repo_urls_path
+    )
 
 
 def _read_results(work_dir: Path) -> dict[str, dict]:
@@ -83,28 +105,6 @@ def _read_results(work_dir: Path) -> dict[str, dict]:
     return results
 
 
-def _write_token(work_dir: Path, token: str) -> None:
-    """Inject the GitHub token into RepoQuester's tokens.py."""
-    tokens_path = work_dir / "tokens.py"
-    tokens_path.write_text(
-        f'import os\n'
-        f'root_directory = os.getcwd()\n'
-        f'git_tokens = {{"{token}": "pipeline"}}\n'
-    )
-    logger.debug("GitHub token injected into tokens.py.")
-
-
-def _write_repo_urls(work_dir: Path, pending: list[dict]) -> None:
-    """Write project names to RepoQuester's repo_urls file."""
-    repo_urls_path = work_dir / "repo_urls"
-    with open(repo_urls_path, "w") as f:
-        for project in pending:
-            f.write(project["full_name"] + "\n")
-    logger.info(
-        "Wrote %d project(s) to %s.", len(pending), repo_urls_path
-    )
-
-
 class RepoQuesterOperator(BaseOperator):
     """
     Run RepoQuester on all active projects that have not yet been evaluated.
@@ -117,20 +117,16 @@ class RepoQuesterOperator(BaseOperator):
     repoquester_dir : Path
         Path to the RepoQuester installation directory inside the container.
         Default: ``REPOQUESTER_DIR`` from settings.
-    db_path : Path
-        Path to the pipeline DuckDB database file.
-    """
+"""
 
     def __init__(
         self,
         *,
         repoquester_dir: Path = REPOQUESTER_DIR,
-        db_path: Path = DUCKDB_PATH,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
         self.repoquester_dir = Path(repoquester_dir)
-        self.db_path = Path(db_path)
 
     # ------------------------------------------------------------------
     # Airflow entry point
@@ -144,7 +140,7 @@ class RepoQuesterOperator(BaseOperator):
         {total, passed, failed, errors}
         """
         # --- Get projects that need quality gate evaluation -----------
-        pending = get_projects_without_quality_gate(db_path=self.db_path)
+        pending = get_projects_without_quality_gate()
 
         if not pending:
             logger.info("No projects pending quality gate evaluation — skipping.")
@@ -184,7 +180,7 @@ class RepoQuesterOperator(BaseOperator):
                 logger.warning("RepoQuester returned unknown project: %s", full_name)
                 continue
             try:
-                upsert_quality_gate(project_id, metrics, db_path=self.db_path)
+                upsert_quality_gate(project_id, metrics)
                 score = sum(1 for k in METRIC_COLUMNS if (metrics.get(k) or 0) > 0)
                 if score > 5:
                     summary["passed"] += 1

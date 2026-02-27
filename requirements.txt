@@ -9,8 +9,9 @@ apache-airflow-providers-fab
 # Standard operators (ShortCircuitOperator, PythonOperator, etc.)
 apache-airflow-providers-standard
 
-# DuckDB — embedded OLAP database (not in Airflow constraints, safe to pin)
-duckdb==1.2.2
+# PostgreSQL — main database
+psycopg2-binary
+
 
 # GitHub REST API client
 PyGithub

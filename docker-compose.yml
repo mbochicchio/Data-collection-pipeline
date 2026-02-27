@@ -4,9 +4,9 @@
 #
 # Usage:
 #   cp .env.example .env          # fill in GITHUB_TOKEN etc.
-#   docker compose up airflow-init
-#   docker compose up -d
-#   open http://localhost:8080     # Airflow UI  (admin / admin)
+#   ./init.sh                     # first-time setup
+#   ./start.sh                    # start pipeline (Ctrl+C to stop + backup)
+#   open http://localhost:8080    # Airflow UI  (admin / admin)
 # ---------------------------------------------------------------------------
 
 x-airflow-common: &airflow-common
@@ -23,15 +23,16 @@ x-airflow-common: &airflow-common
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://airflow-apiserver:8080/execution/"
     # Workaround for Airflow 3.1.7 bug — JWT secret must be set explicitly
-    # See: https://github.com/apache/airflow/issues/62026
     AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW__API_AUTH__JWT_SECRET}
-    # These must be identical across ALL services — read from .env
     AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
     AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW__WEBSERVER__SECRET_KEY}
-    # Airflow 3.x uses this for internal JWT token signing between components
     AIRFLOW__API__AUTH_BACKENDS: "airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session"
-    DUCKDB_PATH: /opt/airflow/data/pipeline.duckdb
-    DATA_DIR: /opt/airflow/data
+    # Pipeline database connection
+    PIPELINE_DB_HOST: pipeline-db
+    PIPELINE_DB_PORT: "5432"
+    PIPELINE_DB_NAME: pipeline
+    PIPELINE_DB_USER: pipeline
+    PIPELINE_DB_PASSWORD: pipeline
     WORKSPACE_DIR: /opt/airflow/workspace
     PYTHONPATH: /opt/airflow/pipeline
   volumes:
@@ -41,13 +42,14 @@ x-airflow-common: &airflow-common
     - ./plugins:/opt/airflow/pipeline/plugins
     - ./scripts:/opt/airflow/pipeline/scripts
     - ./logs:/opt/airflow/logs
-    - pipeline-data:/opt/airflow/data
     - ./data/repo_urls.txt:/opt/airflow/pipeline/data/repo_urls.txt:ro
     - pipeline-workspace:/opt/airflow/workspace
     - ./tools/Designite:/opt/designite
     - ./tools/Repoquester:/opt/repoquester
   depends_on:
     postgres:
+      condition: service_healthy
+    pipeline-db:
       condition: service_healthy
   restart: unless-stopped
 
@@ -72,19 +74,32 @@ services:
     restart: unless-stopped
 
   # ---------------------------------------------------------------------------
+  # PostgreSQL — Pipeline data database
+  # ---------------------------------------------------------------------------
+  pipeline-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pipeline
+      POSTGRES_PASSWORD: pipeline
+      POSTGRES_DB: pipeline
+    ports:
+      - "5434:5432"
+    volumes:
+      - pipeline-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "pipeline"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
   # Airflow initialisation — runs once then exits
-  # Creates a sentinel file /opt/airflow/data/.init_done on success so that
-  # the other services can wait for it via depends_on condition: service_healthy
   # ---------------------------------------------------------------------------
   airflow-init:
     <<: *airflow-common
-    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com && python /opt/airflow/pipeline/scripts/init_db.py --seed /opt/airflow/pipeline/data/repo_urls.txt && touch /opt/airflow/data/.init_done"
-    healthcheck:
-      test: ["CMD", "test", "-f", "/opt/airflow/data/.init_done"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
+    profiles: ["init"]
+    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com && python /opt/airflow/pipeline/scripts/init_db.py --seed /opt/airflow/pipeline/data/repo_urls.txt"
     restart: "no"
 
   # ---------------------------------------------------------------------------
@@ -95,9 +110,6 @@ services:
     command: api-server
     ports:
       - "8080:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 30s
@@ -111,9 +123,6 @@ services:
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
-    depends_on:
-      postgres:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "SchedulerJob", "--local"]
       interval: 30s
@@ -127,9 +136,6 @@ services:
   airflow-dag-processor:
     <<: *airflow-common
     command: dag-processor
-    depends_on:
-      postgres:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "DagProcessorJob", "--local"]
       interval: 30s
@@ -143,9 +149,6 @@ services:
   airflow-triggerer:
     <<: *airflow-common
     command: triggerer
-    depends_on:
-      postgres:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "TriggererJob", "--local"]
       interval: 30s
@@ -155,5 +158,5 @@ services:
 
 volumes:
   postgres-data:
-  pipeline-data:
+  pipeline-db-data:
   pipeline-workspace:

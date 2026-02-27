@@ -2,7 +2,7 @@
 Airflow operator for fetching GitHub repository data.
 
 This operator wraps :class:`~common.github_client.GitHubClient` and writes
-results directly to the DuckDB database via the ``common.db`` layer.
+results directly to the PostgreSQL database via the ``common.db`` layer.
 
 It performs two operations in sequence for each project:
 1. Fetch repository metadata → update ``language`` in the ``projects`` table.
@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime, timezone
-from pathlib import Path
 
 from airflow.sdk import BaseOperator
 
@@ -25,14 +24,74 @@ from common.db import (
 )
 from common.github_client import GitHubClient
 from common.models import Project, ProjectLanguage, Version
-from config.settings import DUCKDB_PATH
 
 logger = logging.getLogger(__name__)
 
 
+def _process_project(project: Project, client: GitHubClient) -> int | None:
+    """
+    Fetch metadata and latest commit for a single project.
+
+    Returns the new ``versions.id`` if a new version was inserted,
+    or ``None`` if the commit was already recorded.
+    """
+    logger.info("Processing '%s' …", project.full_name)
+
+    meta = client.get_repo_metadata(project.full_name)
+    detected_language = ProjectLanguage.from_github(meta.language)
+
+    if detected_language != project.language:
+        logger.info(
+            "  Updating language for '%s': %s → %s",
+            project.full_name,
+            project.language.value,
+            detected_language.value,
+        )
+        updated_project = Project(
+            id=project.id,
+            full_name=project.full_name,
+            owner=project.owner,
+            repo_name=project.repo_name,
+            language=detected_language,
+            is_active=project.is_active,
+            added_at=project.added_at,
+        )
+        upsert_project(updated_project)
+
+    commit = client.get_latest_commit(
+        branch=meta.default_branch,
+        owner=project.owner,
+        repo_name=project.repo_name,
+    )
+
+    logger.info(
+        "  Latest commit: %s ('%s')", commit.sha[:7], commit.message[:60]
+    )
+
+    version = Version(
+        project_id=project.id,
+        commit_sha=commit.sha,
+        commit_message=commit.message,
+        committed_at=commit.committed_at,
+        discovered_at=datetime.now(timezone.utc),
+        default_branch=meta.default_branch,
+        metadata={
+            "description": meta.description,
+            "stars": meta.stars,
+            "forks": meta.forks,
+            "open_issues": meta.open_issues,
+            "is_fork": meta.is_fork,
+            "is_archived": meta.is_archived,
+            "updated_at": meta.updated_at.isoformat(),
+        },
+    )
+
+    return insert_version_if_new(version)
+
+
 class GitHubIngestionOperator(BaseOperator):
     """
-    Fetch the latest commit for every active project and persist it to DuckDB.
+    Fetch the latest commit for every active project and persist it to PostgreSQL.
 
     For each active project in the ``projects`` table the operator will:
 
@@ -45,10 +104,8 @@ class GitHubIngestionOperator(BaseOperator):
 
     Parameters
     ----------
-    db_path:
-        Path to the DuckDB file.  Defaults to :data:`config.settings.DUCKDB_PATH`.
     github_token:
-        GitHub Personal Access Token.  Falls back to the value in
+        GitHub Personal Access Token. Falls back to the value in
         ``config.settings`` (which reads from the ``GITHUB_TOKEN`` env var).
 
     Example usage in a DAG::
@@ -58,23 +115,14 @@ class GitHubIngestionOperator(BaseOperator):
         )
     """
 
-    # Airflow renders these fields as Jinja templates if needed
-    template_fields = ("db_path",)
-
     def __init__(
         self,
         *,
-        db_path: str | Path = DUCKDB_PATH,
         github_token: str | None = None,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
-        self.db_path = Path(db_path)
-        self._github_token = github_token  # None → client falls back to settings
-
-    # ------------------------------------------------------------------
-    # Airflow entry point
-    # ------------------------------------------------------------------
+        self._github_token = github_token
 
     def execute(self, context: dict) -> dict:
         """
@@ -86,21 +134,20 @@ class GitHubIngestionOperator(BaseOperator):
             **({"token": self._github_token} if self._github_token else {})
         )
 
-        projects = get_active_projects(db_path=self.db_path)
+        projects = get_active_projects()
         logger.info("Found %d active project(s) to ingest.", len(projects))
 
         summary = {"processed": 0, "new_versions": 0, "skipped": 0, "errors": []}
 
         for project in projects:
             try:
-                new_version_id = self._process_project(project, client)
+                new_version_id = _process_project(project, client)
                 summary["processed"] += 1
                 if new_version_id is not None:
                     summary["new_versions"] += 1
                 else:
                     summary["skipped"] += 1
             except Exception as exc:
-                # Log and continue — one failing project must not abort the rest
                 logger.error(
                     "Failed to ingest project '%s': %s", project.full_name, exc, exc_info=True
                 )
@@ -114,69 +161,3 @@ class GitHubIngestionOperator(BaseOperator):
             len(summary["errors"]),
         )
         return summary
-
-    # ------------------------------------------------------------------
-    # Per-project logic
-    # ------------------------------------------------------------------
-
-    def _process_project(self, project: Project, client: GitHubClient) -> int | None:
-        """
-        Fetch metadata and latest commit for a single project.
-
-        Returns the new ``versions.id`` if a new version was inserted,
-        or ``None`` if the commit was already recorded.
-        """
-        logger.info("Processing '%s' …", project.full_name)
-
-        # --- Step 1: fetch repo metadata and update language ---------------
-        meta = client.get_repo_metadata(project.full_name)
-        detected_language = ProjectLanguage.from_github(meta.language)
-
-        if detected_language != project.language:
-            logger.info(
-                "  Updating language for '%s': %s → %s",
-                project.full_name,
-                project.language.value,
-                detected_language.value,
-            )
-            updated_project = Project(
-                id=project.id,
-                full_name=project.full_name,
-                owner=project.owner,
-                repo_name=project.repo_name,
-                language=detected_language,
-                is_active=project.is_active,
-                added_at=project.added_at,
-            )
-            upsert_project(updated_project, db_path=self.db_path)
-
-        # --- Step 2: fetch latest commit and insert version if new ---------
-        commit = client.get_latest_commit(
-            branch=meta.default_branch,
-            owner=project.owner,
-            repo_name=project.repo_name,
-        )
-
-        logger.info(
-            "  Latest commit: %s ('%s')", commit.sha[:7], commit.message[:60]
-        )
-
-        version = Version(
-            project_id=project.id,
-            commit_sha=commit.sha,
-            commit_message=commit.message,
-            committed_at=commit.committed_at,
-            discovered_at=datetime.now(timezone.utc),
-            default_branch=meta.default_branch,
-            metadata={
-                "description": meta.description,
-                "stars": meta.stars,
-                "forks": meta.forks,
-                "open_issues": meta.open_issues,
-                "is_fork": meta.is_fork,
-                "is_archived": meta.is_archived,
-                "updated_at": meta.updated_at.isoformat(),
-            },
-        )
-
-        return insert_version_if_new(version, db_path=self.db_path)

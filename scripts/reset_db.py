@@ -1,9 +1,6 @@
 """
 Database reset and reinitialisation utility — Data-collection-pipeline.
 
-Use this script when you need to recover from a corrupted database, start
-fresh during development, or re-seed projects after a full reset.
-
 Available commands
 ------------------
 status      Show current row counts for all tables (non-destructive).
@@ -34,73 +31,61 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
 
-import duckdb
-
-from common.db import init_schema, upsert_project
+from common.db import get_connection, init_schema, upsert_project
 from common.models import Project
-from config.settings import DUCKDB_PATH
+from config.settings import PIPELINE_DB_HOST, PIPELINE_DB_PORT, PIPELINE_DB_NAME
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s  %(message)s")
 logger = logging.getLogger(__name__)
 
-# Default seed file location (relative to project root)
 DEFAULT_SEED_FILE = Path(__file__).resolve().parent.parent / "data" / "repo_urls.txt"
 
 
-# ---------------------------------------------------------------------------
-# Commands
-# ---------------------------------------------------------------------------
-
-
-def cmd_status(db_path: Path) -> None:
+def cmd_status() -> None:
     """Print row counts for every table without modifying anything."""
-    if not db_path.exists():
-        logger.warning("Database file not found at %s", db_path)
-        return
-
-    conn = duckdb.connect(str(db_path), read_only=True)
-    try:
-        tables = ["projects", "versions", "analyses"]
-        print("\n── Database status ─────────────────────────")
-        print(f"  Path: {db_path}")
-        print(f"  Size: {db_path.stat().st_size / 1024:.1f} KB\n")
-        for table in tables:
-            try:
-                count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-                print(f"  {table:<20} {count:>6} rows")
-            except Exception:
-                print(f"  {table:<20}   (table not found)")
-        print("─" * 44 + "\n")
-    finally:
-        conn.close()
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            tables = ["projects", "versions", "analyses", "quality_gates"]
+            print("\n── Database status ─────────────────────────")
+            print(f"  Host: {PIPELINE_DB_HOST}:{PIPELINE_DB_PORT}/{PIPELINE_DB_NAME}\n")
+            for table in tables:
+                try:
+                    cur.execute(f"SELECT COUNT(*) FROM {table}")
+                    count = cur.fetchone()[0]
+                    print(f"  {table:<20} {count:>6} rows")
+                except Exception:
+                    print(f"  {table:<20}   (table not found)")
+            print("─" * 44 + "\n")
 
 
-def cmd_reset(db_path: Path, yes: bool) -> None:
+def cmd_reset(yes: bool) -> None:
     """Drop all tables and recreate the schema from scratch."""
     if not yes:
         confirm = input(
-            f"\n⚠️  This will DELETE ALL DATA in {db_path}.\n"
+            f"\n⚠️  This will DELETE ALL DATA in {PIPELINE_DB_NAME}.\n"
             "Type 'yes' to confirm: "
         ).strip().lower()
         if confirm != "yes":
             logger.info("Reset cancelled.")
             return
 
-    if db_path.exists():
-        logger.info("Deleting existing database file …")
-        db_path.unlink()
+    logger.info("Dropping all pipeline tables …")
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                DROP TABLE IF EXISTS quality_gates CASCADE;
+                DROP TABLE IF EXISTS analyses CASCADE;
+                DROP TABLE IF EXISTS versions CASCADE;
+                DROP TABLE IF EXISTS projects CASCADE;
+            """)
 
     logger.info("Recreating schema …")
-    init_schema(db_path=db_path)
+    init_schema()
     logger.info("Reset complete. Database is empty and ready.")
 
 
-def cmd_reseed(db_path: Path, seed_file: Path) -> None:
+def cmd_reseed(seed_file: Path) -> None:
     """Re-insert projects from the seed file without touching versions or analyses."""
-    if not db_path.exists():
-        logger.error("Database not found. Run 'status' or 'reset' first.")
-        sys.exit(1)
-
     if not seed_file.exists():
         logger.error("Seed file not found: %s", seed_file)
         sys.exit(1)
@@ -117,7 +102,7 @@ def cmd_reseed(db_path: Path, seed_file: Path) -> None:
     for full_name in entries:
         try:
             project = Project.from_full_name(full_name)
-            pid = upsert_project(project, db_path=db_path)
+            pid = upsert_project(project)
             logger.info("  ✓  %-40s (id=%s)", full_name, pid)
             ok += 1
         except Exception as exc:
@@ -127,15 +112,10 @@ def cmd_reseed(db_path: Path, seed_file: Path) -> None:
     logger.info("Reseed complete. inserted/updated=%d  skipped=%d", ok, skipped)
 
 
-def cmd_full_reset(db_path: Path, seed_file: Path, yes: bool) -> None:
+def cmd_full_reset(seed_file: Path, yes: bool) -> None:
     """Drop everything and re-seed projects."""
-    cmd_reset(db_path, yes=yes)
-    cmd_reseed(db_path, seed_file)
-
-
-# ---------------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------------
+    cmd_reset(yes=yes)
+    cmd_reseed(seed_file)
 
 
 def parse_args() -> argparse.Namespace:
@@ -150,16 +130,10 @@ def parse_args() -> argparse.Namespace:
         help="Action to perform.",
     )
     parser.add_argument(
-        "--db-path",
-        type=Path,
-        default=DUCKDB_PATH,
-        help=f"Path to the DuckDB file (default: {DUCKDB_PATH})",
-    )
-    parser.add_argument(
         "--seed-file",
         type=Path,
         default=DEFAULT_SEED_FILE,
-        help=f"Seed file with one 'owner/repo' per line (default: {DEFAULT_SEED_FILE})",
+        help=f"Seed file (default: {DEFAULT_SEED_FILE})",
     )
     parser.add_argument(
         "--yes",
@@ -171,14 +145,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-
     dispatch = {
-        "status":     lambda: cmd_status(args.db_path),
-        "reset":      lambda: cmd_reset(args.db_path, yes=args.yes),
-        "reseed":     lambda: cmd_reseed(args.db_path, args.seed_file),
-        "full-reset": lambda: cmd_full_reset(args.db_path, args.seed_file, yes=args.yes),
+        "status":     cmd_status,
+        "reset":      lambda: cmd_reset(yes=args.yes),
+        "reseed":     lambda: cmd_reseed(args.seed_file),
+        "full-reset": lambda: cmd_full_reset(args.seed_file, yes=args.yes),
     }
-
     dispatch[args.command]()
 
 

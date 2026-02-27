@@ -36,7 +36,7 @@ from airflow.sdk import dag, task
 from airflow.providers.standard.operators.python import ShortCircuitOperator
 
 from common.db import get_projects_without_quality_gate
-from config.settings import DUCKDB_PATH, REPOQUESTER_DIR
+from config.settings import REPOQUESTER_DIR
 from plugins.operators.repoquester_operator import RepoQuesterOperator
 
 logger = logging.getLogger(__name__)
@@ -53,7 +53,7 @@ QUALITY_GATE_SCHEDULE = "@weekly"
 
 def _has_pending_projects() -> bool:
     """Return True if there are projects without a quality gate result."""
-    pending = get_projects_without_quality_gate(db_path=DUCKDB_PATH)
+    pending = get_projects_without_quality_gate()
     if not pending:
         logger.info("All projects already have a quality gate result — skipping.")
         return False
@@ -87,7 +87,6 @@ def quality_gate_dag():
     run_gate = RepoQuesterOperator(
         task_id="run_quality_gate",
         repoquester_dir=REPOQUESTER_DIR,
-        db_path=DUCKDB_PATH,
         retries=1,
     )
 

@@ -15,18 +15,18 @@ from pathlib import Path
 # Root directory of the project (one level above config/)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Directory where the DuckDB database file is stored (mounted volume in Docker)
-DATA_DIR = Path(os.getenv("DATA_DIR", BASE_DIR / "data"))
-
 # Directory used as working space for cloning repos and running tools
 WORKSPACE_DIR = Path(os.getenv("WORKSPACE_DIR", BASE_DIR / "workspace"))
 
 # ---------------------------------------------------------------------------
-# DuckDB
+# Pipeline PostgreSQL database
 # ---------------------------------------------------------------------------
 
-# Full path to the DuckDB database file
-DUCKDB_PATH = Path(os.getenv("DUCKDB_PATH", DATA_DIR / "pipeline.duckdb"))
+PIPELINE_DB_HOST     = os.getenv("PIPELINE_DB_HOST", "pipeline-db")
+PIPELINE_DB_PORT     = int(os.getenv("PIPELINE_DB_PORT", "5432"))
+PIPELINE_DB_NAME     = os.getenv("PIPELINE_DB_NAME", "pipeline")
+PIPELINE_DB_USER     = os.getenv("PIPELINE_DB_USER", "pipeline")
+PIPELINE_DB_PASSWORD = os.getenv("PIPELINE_DB_PASSWORD", "pipeline")
 
 # ---------------------------------------------------------------------------
 # GitHub API

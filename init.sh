@@ -3,59 +3,61 @@
 # init.sh — Initialize the pipeline for the first time (or after a reset)
 #
 # What it does:
-#   1. Copies the local pipeline.duckdb into the Docker volume
-#   2. Runs airflow-init (db migrate, create admin user, seed projects)
-#   3. Copies the updated pipeline.duckdb back to local data/
+#   1. Starts postgres and pipeline-db
+#   2. Restores the local backup into pipeline-db (if it exists)
+#   3. Runs airflow-init (db migrate, create admin user, seed projects)
+#   4. Saves a backup of pipeline-db to data/pipeline_backup.sql
 #
 # Usage:
-#   chmod +x init.sh
+#   chmod +x init.sh start.sh
 #   ./init.sh
 # =============================================================================
 
-set -e  # Exit immediately on error
+set -e
 
-VOLUME_NAME="data-collection-pipeline_pipeline-data"
-LOCAL_DB="./data/pipeline.duckdb"
-CONTAINER_DB="/opt/airflow/data/pipeline.duckdb"
+BACKUP_FILE="./data/pipeline_backup.sql"
+DB_CONTAINER="data-collection-pipeline-pipeline-db-1"
+DB_USER="pipeline"
+DB_NAME="pipeline"
 
 echo ""
 echo "=============================================="
 echo "  Pipeline Init"
 echo "=============================================="
 
-# --- Step 1: ensure volume exists -----------------------------------------
+# --- Step 1: start databases -----------------------------------------------
 echo ""
-echo "[1/4] Creating Docker volume if not exists..."
-docker volume create "$VOLUME_NAME" > /dev/null
-echo "      Volume '$VOLUME_NAME' ready."
+echo "[1/4] Starting databases..."
+docker compose up -d postgres pipeline-db
+echo "      Waiting for pipeline-db to be healthy..."
+until docker compose exec pipeline-db pg_isready -U "$DB_USER" > /dev/null 2>&1; do
+    sleep 2
+done
+echo "      pipeline-db is ready."
 
-# --- Step 2: copy local DB into volume ------------------------------------
+# --- Step 2: restore backup if exists --------------------------------------
 echo ""
-echo "[2/4] Copying local database into Docker volume..."
-if [ -f "$LOCAL_DB" ]; then
-    docker run --rm \
-        -v "$(pwd)/data:/source" \
-        -v "$VOLUME_NAME:/dest" \
-        alpine sh -c "cp /source/pipeline.duckdb /dest/pipeline.duckdb && chmod -R 777 /dest"
-    echo "      Copied $LOCAL_DB → volume."
+echo "[2/4] Checking for local backup..."
+if [ -f "$BACKUP_FILE" ]; then
+    echo "      Restoring backup from $BACKUP_FILE ..."
+    docker compose exec -T pipeline-db psql -U "$DB_USER" -d "$DB_NAME" < "$BACKUP_FILE"
+    echo "      Backup restored."
 else
-    echo "      No local database found — will create a new one."
+    echo "      No backup found — starting with empty database."
 fi
 
-# --- Step 3: run airflow-init ---------------------------------------------
+# --- Step 3: run airflow-init ----------------------------------------------
 echo ""
 echo "[3/4] Running airflow-init..."
 docker compose --profile init up airflow-init
 echo "      airflow-init completed."
 
-# --- Step 4: copy DB back to local ----------------------------------------
+# --- Step 4: save backup ---------------------------------------------------
 echo ""
-echo "[4/4] Copying database from volume back to local data/..."
-docker run --rm \
-    -v "$VOLUME_NAME:/source" \
-    -v "$(pwd)/data:/dest" \
-    alpine cp /source/pipeline.duckdb /dest/pipeline.duckdb
-echo "      Saved to $LOCAL_DB."
+echo "[4/4] Saving database backup to $BACKUP_FILE ..."
+mkdir -p ./data
+docker compose exec pipeline-db pg_dump -U "$DB_USER" "$DB_NAME" > "$BACKUP_FILE"
+echo "      Backup saved."
 
 echo ""
 echo "=============================================="

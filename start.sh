@@ -3,21 +3,21 @@
 # start.sh — Start the Airflow pipeline
 #
 # What it does:
-#   1. Copies the local pipeline.duckdb into the Docker volume
-#   2. Starts all Airflow services (docker compose up -d)
+#   1. Starts pipeline-db and restores the local backup
+#   2. Starts all Airflow services
 #   3. Waits for Ctrl+C or SIGTERM
-#   4. On shutdown: copies the updated pipeline.duckdb back to local data/
+#   4. On shutdown: saves a backup of pipeline-db to data/pipeline_backup.sql
 #   5. Stops all containers
 #
 # Usage:
-#   chmod +x start.sh
 #   ./start.sh
 # =============================================================================
 
 set -e
 
-VOLUME_NAME="data-collection-pipeline_pipeline-data"
-LOCAL_DB="./data/pipeline.duckdb"
+BACKUP_FILE="./data/pipeline_backup.sql"
+DB_USER="pipeline"
+DB_NAME="pipeline"
 
 # --- Shutdown handler -------------------------------------------------------
 shutdown() {
@@ -27,12 +27,10 @@ shutdown() {
     echo "=============================================="
 
     echo ""
-    echo "[1/2] Copying database from volume back to local data/..."
-    docker run --rm \
-        -v "$VOLUME_NAME:/source" \
-        -v "$(pwd)/data:/dest" \
-        alpine cp /source/pipeline.duckdb /dest/pipeline.duckdb
-    echo "      Saved to $LOCAL_DB."
+    echo "[1/2] Saving database backup to $BACKUP_FILE ..."
+    mkdir -p ./data
+    docker compose exec pipeline-db pg_dump -U "$DB_USER" "$DB_NAME" > "$BACKUP_FILE"
+    echo "      Backup saved."
 
     echo ""
     echo "[2/2] Stopping containers..."
@@ -47,30 +45,35 @@ shutdown() {
     exit 0
 }
 
-# Trap Ctrl+C (SIGINT) and SIGTERM
 trap shutdown SIGINT SIGTERM
 
-# --- Step 1: copy local DB into volume -------------------------------------
+# --- Step 1: start pipeline-db and restore backup --------------------------
 echo ""
 echo "=============================================="
 echo "  Pipeline Start"
 echo "=============================================="
 
 echo ""
-echo "[1/2] Copying local database into Docker volume..."
-if [ -f "$LOCAL_DB" ]; then
-    docker run --rm \
-        -v "$(pwd)/data:/source" \
-        -v "$VOLUME_NAME:/dest" \
-        alpine sh -c "cp /source/pipeline.duckdb /dest/pipeline.duckdb && chmod -R 777 /dest"
-    echo "      Copied $LOCAL_DB → volume."
+echo "[1/2] Starting pipeline-db..."
+docker compose up -d postgres pipeline-db
+echo "      Waiting for pipeline-db to be healthy..."
+until docker compose exec pipeline-db pg_isready -U "$DB_USER" > /dev/null 2>&1; do
+    sleep 2
+done
+echo "      pipeline-db is ready."
+
+if [ -f "$BACKUP_FILE" ]; then
+    echo "      Restoring backup from $BACKUP_FILE ..."
+    docker compose exec -T pipeline-db psql -U "$DB_USER" -d "$DB_NAME" < "$BACKUP_FILE"
+    echo "      Backup restored."
 else
-    echo "      WARNING: No local database found at $LOCAL_DB."
+    echo "      WARNING: No backup found at $BACKUP_FILE."
     echo "      Run ./init.sh first to initialize the database."
+    docker compose down
     exit 1
 fi
 
-# --- Step 2: start services ------------------------------------------------
+# --- Step 2: start all services --------------------------------------------
 echo ""
 echo "[2/2] Starting Airflow services..."
 docker compose up -d
@@ -82,7 +85,6 @@ echo "  Pipeline running. Press Ctrl+C to stop."
 echo "=============================================="
 echo ""
 
-# Wait indefinitely until signal
 while true; do
     sleep 5
 done
