@@ -53,7 +53,7 @@ fi
 # --- Print connection info ---------------------------------------------------
 echo ""
 echo "=============================================="
-echo "  pipeline-db is running on localhost:5434"
+echo "  pipeline-db is running on localhost:5440"
 echo ""
 echo "  ./db.sh status"
 echo "  ./db.sh reset"

@@ -9,4 +9,4 @@
 #   ./db.sh full-reset
 # =============================================================================
 
-PIPELINE_DB_HOST=localhost PIPELINE_DB_PORT=5434 python scripts/reset_db.py "$@"
+PIPELINE_DB_HOST=localhost PIPELINE_DB_PORT=5440 python scripts/reset_db.py "$@"
