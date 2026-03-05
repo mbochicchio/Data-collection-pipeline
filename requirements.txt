@@ -9,9 +9,11 @@ apache-airflow-providers-fab
 # Standard operators (ShortCircuitOperator, PythonOperator, etc.)
 apache-airflow-providers-standard
 
-# PostgreSQL — main database
+# PostgreSQL driver
 psycopg2-binary
 
+# Required by RepoQuester
+apscheduler
 
 # GitHub REST API client
 PyGithub
