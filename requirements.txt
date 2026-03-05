@@ -14,6 +14,10 @@ psycopg2-binary
 
 # Required by RepoQuester
 apscheduler
+arrow
+bs4
+lxml
+html5lib
 
 # GitHub REST API client
 PyGithub
