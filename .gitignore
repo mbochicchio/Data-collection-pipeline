@@ -11,6 +11,9 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/vcs.xml
+.idea/**misc.xml
+.idea/**/Data-collection-pipeline.iml
 
 # AWS User-specific
 .idea/**/aws.xml
