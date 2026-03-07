@@ -5,7 +5,7 @@ RepoQuester evaluates GitHub projects on 9 quality dimensions:
 community, continuous_integration, documentation, history, management,
 license, unit_test, pull, releases.
 
-A project passes the quality gate if at least 5 of the 9 dimensions
+A project passes the quality gate if 5 or more of the 9 dimensions
 have a score > 0. Only projects that pass will be analysed by Designite.
 
 Workflow
@@ -47,6 +47,8 @@ METRIC_COLUMNS = [
     "pull",
     "releases",
 ]
+
+THREASHOLD = 5
 
 
 def _write_repo_urls(work_dir: Path, pending: list[dict]) -> None:
@@ -182,7 +184,7 @@ class RepoQuesterOperator(BaseOperator):
             try:
                 upsert_quality_gate(project_id, metrics)
                 score = sum(1 for k in METRIC_COLUMNS if (metrics.get(k) or 0) > 0)
-                if score > 5:
+                if score >= THREASHOLD:
                     summary["passed"] += 1
                 else:
                     summary["failed"] += 1
