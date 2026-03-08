@@ -13,12 +13,13 @@ USER root
 # System dependencies
 # ---------------------------------------------------------------------------
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        # Java 22 runtime for DesigniteJava.jar (requires class file version 66.0) \
-        openjdk-22-jre-headless \
-        # Git is required to clone repositories
+# Install Java 22 via Adoptium/Temurin repository
+RUN apt-get update && apt-get install -y --no-install-recommends wget gnupg \
+    && wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor > /etc/apt/trusted.gpg.d/adoptium.gpg \
+    && echo "deb https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo $) main" > /etc/apt/sources.list.d/adoptium.list \
+    && apt-get update && apt-get install -y --no-install-recommends \
+        temurin-22-jre \
         git \
-        # curl used in health checks
         curl \
     && rm -rf /var/lib/apt/lists/*
 
