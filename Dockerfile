@@ -16,7 +16,7 @@ USER root
 # Install Java 22 via Adoptium/Temurin repository
 RUN apt-get update && apt-get install -y --no-install-recommends wget gnupg \
     && wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor > /etc/apt/trusted.gpg.d/adoptium.gpg \
-    && echo "deb https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo $) main" > /etc/apt/sources.list.d/adoptium.list \
+    && echo "deb https://packages.adoptium.net/artifactory/deb bookworm main" > /etc/apt/sources.list.d/adoptium.list \
     && apt-get update && apt-get install -y --no-install-recommends \
         temurin-22-jre \
         git \
