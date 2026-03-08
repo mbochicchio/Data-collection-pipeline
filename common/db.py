@@ -315,13 +315,24 @@ def get_versions_pending_analysis() -> list[Version]:
 
 
 def create_analysis(version_id: int, project_id: int) -> int:
-    """Create a new analysis row in PENDING status. Returns the new analysis id."""
+    """
+    Create a new analysis row in PENDING status. Returns the analysis id.
+
+    If a row already exists for this version (e.g. a stale PENDING/RUNNING
+    from a previous failed run), resets it to PENDING and returns its id.
+    """
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
                 INSERT INTO analyses (version_id, project_id, status)
                 VALUES (%s, %s, %s)
+                ON CONFLICT (version_id) DO UPDATE SET
+                    status        = EXCLUDED.status,
+                    started_at    = NULL,
+                    finished_at   = NULL,
+                    error_message = NULL,
+                    results_json  = NULL
                 RETURNING id
                 """,
                 (version_id, project_id, AnalysisStatus.PENDING.value),
