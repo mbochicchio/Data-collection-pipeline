@@ -14,11 +14,11 @@ USER root
 # ---------------------------------------------------------------------------
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        # Java runtime for DesigniteJava.jar
-        default-jre-headless \
+        # Java 22 runtime for DesigniteJava.jar (requires class file version 66.0) \
+        openjdk-22-jre-headless \
         # Git is required to clone repositories
         git \
-        # curl used in healthchecks
+        # curl used in health checks
         curl \
     && rm -rf /var/lib/apt/lists/*
 
