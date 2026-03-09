@@ -449,5 +449,8 @@ tools/Designite
 
 data/.init_done
 
+workspace
+ssh-keys
+
 
 # End of https://www.toptal.com/developers/gitignore/api/python,linux,macos,windows,intellij,pycharm

@@ -43,7 +43,8 @@ x-airflow-common: &airflow-common
     - ./scripts:/opt/airflow/pipeline/scripts
     - ./logs:/opt/airflow/logs
     - ./data/repo_urls.txt:/opt/airflow/pipeline/data/repo_urls.txt:ro
-    - pipeline-workspace:/opt/airflow/workspace
+    - ./workspace:/opt/airflow/workspace
+    - ./ssh-keys:/home/airflow/.ssh
     - ./tools/Designite:/opt/designite
     - ./tools/Repoquester:/opt/repoquester
   depends_on:
@@ -159,4 +160,3 @@ services:
 volumes:
   postgres-data:
   pipeline-db-data:
-  pipeline-workspace:

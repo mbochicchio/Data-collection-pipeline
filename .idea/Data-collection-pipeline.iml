@@ -6,6 +6,8 @@
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/logs" />
       <excludeFolder url="file://$MODULE_DIR$/tools/Designite" />
+      <excludeFolder url="file://$MODULE_DIR$/ssh-keys" />
+      <excludeFolder url="file://$MODULE_DIR$/workspace" />
     </content>
     <orderEntry type="jdk" jdkName="$USER_HOME$/anaconda3" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
