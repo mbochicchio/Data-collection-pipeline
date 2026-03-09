@@ -187,9 +187,9 @@ class DesigniteOperator(BaseOperator):
         host_output_path = str(output_path).replace(container_workspace, host_workspace, 1)
 
         remote_cmd = (
-            f"{DESIGNITE_PYTHON_HOST_EXECUTABLE} analyze "
-            f"-i {host_repo_path} "
-            f"-o {host_output_path}"
+            f'"{DESIGNITE_PYTHON_HOST_EXECUTABLE}" analyze '
+            f'"-i" "{host_repo_path}" '
+            f'"-o" "{host_output_path}"'
         )
 
         ssh_cmd = [
