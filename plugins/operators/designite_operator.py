@@ -186,10 +186,13 @@ class DesigniteOperator(BaseOperator):
         host_repo_path = str(repo_path).replace(container_workspace, host_workspace, 1)
         host_output_path = str(output_path).replace(container_workspace, host_workspace, 1)
 
+        # Keep tilde unexpanded so zsh on the Mac host expands it
+        dpy_executable = DESIGNITE_PYTHON_HOST_EXECUTABLE
         remote_cmd = (
-            f'"{DESIGNITE_PYTHON_HOST_EXECUTABLE}" analyze '
-            f'"-i" "{host_repo_path}" '
-            f'"-o" "{host_output_path}"'
+            f"cd $(dirname {dpy_executable}) && "
+            f"./$(basename {dpy_executable}) analyze "
+            f"-i {host_repo_path!r} "
+            f"-o {host_output_path!r}"
         )
 
         ssh_cmd = [
