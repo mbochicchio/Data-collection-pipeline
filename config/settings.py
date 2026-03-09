@@ -32,7 +32,7 @@ PIPELINE_DB_PASSWORD = os.getenv("PIPELINE_DB_PASSWORD", "pipeline")
 # GitHub API
 # ---------------------------------------------------------------------------
 
-# Single Personal Access Token (backward-compatible)
+# Single Personal Access Token (backward compatible)
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 
 # Multiple tokens for rotation — comma-separated, takes precedence over GITHUB_TOKEN
@@ -75,6 +75,21 @@ JAVA_EXECUTABLE = os.getenv("JAVA_EXECUTABLE", "java")
 # Usage: ./DPy analyze -i <input_folder> -o <output_folder>
 DESIGNITE_PYTHON_EXECUTABLE = Path(
     os.getenv("DESIGNITE_PYTHON_EXECUTABLE", "/opt/designite/DPy")
+)
+
+# SSH host for running DPy on the Mac host (DPy is a macOS binary)
+# Docker Desktop exposes the host at host.docker.internal
+DESIGNITE_PYTHON_SSH_HOST = os.getenv("DESIGNITE_PYTHON_SSH_HOST", "host.docker.internal")
+DESIGNITE_PYTHON_SSH_USER = os.getenv("DESIGNITE_PYTHON_SSH_USER", "")
+
+# Path to DPy on the Mac host (absolute path on the host machine)
+DESIGNITE_PYTHON_HOST_EXECUTABLE = os.getenv(
+    "DESIGNITE_PYTHON_HOST_EXECUTABLE", ""
+)
+
+# Workspace directory as seen from the Mac host (must match the volume mount)
+DESIGNITE_PYTHON_HOST_WORKSPACE = os.getenv(
+    "DESIGNITE_PYTHON_HOST_WORKSPACE", ""
 )
 
 # ---------------------------------------------------------------------------

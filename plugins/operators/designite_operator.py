@@ -34,7 +34,10 @@ from common.db import (
 from common.models import ProjectLanguage, Version
 from config.settings import (
     DESIGNITE_JAVA_JAR,
-    DESIGNITE_PYTHON_EXECUTABLE,
+    DESIGNITE_PYTHON_SSH_HOST,
+    DESIGNITE_PYTHON_SSH_USER,
+    DESIGNITE_PYTHON_HOST_EXECUTABLE,
+    DESIGNITE_PYTHON_HOST_WORKSPACE,
     JAVA_EXECUTABLE,
     WORKSPACE_DIR,
 )
@@ -152,8 +155,52 @@ class DesigniteOperator(BaseOperator):
         self._run_command([JAVA_EXECUTABLE, "-jar", str(DESIGNITE_JAVA_JAR), "-i", str(repo_path), "-o", str(output_path)])
 
     def _run_designite_python(self, repo_path: Path, output_path: Path) -> None:
-        logger.info("Running DPy on %s …", self.repo_full_name)
-        self._run_command([str(DESIGNITE_PYTHON_EXECUTABLE), "analyze", "-i", str(repo_path), "-o", str(output_path)])
+        """
+        Run DPy on the Mac host via SSH.
+
+        DPy is a macOS binary and cannot run inside the Linux container.
+        The workspace is a shared volume — paths are translated from the
+        container path to the host path using DESIGNITE_PYTHON_HOST_WORKSPACE.
+        """
+        logger.info("Running DPy on %s via SSH …", self.repo_full_name)
+
+        if not DESIGNITE_PYTHON_SSH_USER:
+            raise RuntimeError(
+                "DESIGNITE_PYTHON_SSH_USER is not set. "
+                "Set it in .env to the Mac username (e.g. 'matteo')."
+            )
+        if not DESIGNITE_PYTHON_HOST_EXECUTABLE:
+            raise RuntimeError(
+                "DESIGNITE_PYTHON_HOST_EXECUTABLE is not set. "
+                "Set it in .env to the absolute path of DPy on the Mac host."
+            )
+        if not DESIGNITE_PYTHON_HOST_WORKSPACE:
+            raise RuntimeError(
+                "DESIGNITE_PYTHON_HOST_WORKSPACE is not set. "
+                "Set it in .env to the workspace path on the Mac host."
+            )
+
+        # Translate container paths to host paths
+        container_workspace = str(self.workspace_dir)
+        host_workspace = DESIGNITE_PYTHON_HOST_WORKSPACE.rstrip("/")
+        host_repo_path = str(repo_path).replace(container_workspace, host_workspace, 1)
+        host_output_path = str(output_path).replace(container_workspace, host_workspace, 1)
+
+        remote_cmd = (
+            f"{DESIGNITE_PYTHON_HOST_EXECUTABLE} analyze "
+            f"-i {host_repo_path} "
+            f"-o {host_output_path}"
+        )
+
+        ssh_cmd = [
+            "ssh",
+            "-o", "StrictHostKeyChecking=no",
+            "-o", "BatchMode=yes",
+            f"{DESIGNITE_PYTHON_SSH_USER}@{DESIGNITE_PYTHON_SSH_HOST}",
+            remote_cmd,
+        ]
+
+        self._run_command(ssh_cmd)
 
     def _parse_output(self, output_path: Path) -> dict[str, list[dict[str, Any]]]:
         results: dict[str, list[dict[str, Any]]] = {}
