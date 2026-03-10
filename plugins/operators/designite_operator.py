@@ -118,7 +118,12 @@ class DesigniteOperator(BaseOperator):
             try:
                 self._clone_repo(repo_path)
                 self._run_designite(repo_path, output_path)
-                results = self._parse_output(output_path)
+                results = self._parse_output(output_path, self.language)
+                if not results:
+                    error_msg = "Designite produced no output files — analysis considered failed."
+                    logger.error("Analysis id=%s failed: %s", analysis_id, error_msg)
+                    update_analysis_failed(analysis_id, error_msg)
+                    return {"status": "failed", "analysis_id": analysis_id, "reason": error_msg}
                 update_analysis_success(analysis_id, results)
                 logger.info(
                     "Analysis id=%s completed successfully. Parsed %d output file(s).",
@@ -205,20 +210,32 @@ class DesigniteOperator(BaseOperator):
 
         self._run_command(ssh_cmd)
 
-    def _parse_output(self, output_path: Path) -> dict[str, list[dict[str, Any]]]:
+    def _parse_output(self, output_path: Path, language: "ProjectLanguage") -> dict[str, list[dict[str, Any]]]:
+        """Parse Designite output files — CSV (Java) or JSON (Python)."""
         results: dict[str, list[dict[str, Any]]] = {}
-        csv_files = list(output_path.rglob("*.csv"))
-        if not csv_files:
-            logger.warning("No CSV output files found in %s.", output_path)
+
+        if language == ProjectLanguage.PYTHON:
+            files = list(output_path.rglob("*.json"))
+            parse_fn = self._parse_json
+            ext = "JSON"
+        else:
+            files = list(output_path.rglob("*.csv"))
+            parse_fn = self._parse_csv
+            ext = "CSV"
+
+        if not files:
+            logger.warning("No %s output files found in %s.", ext, output_path)
             return results
-        for csv_file in csv_files:
-            key = csv_file.stem
+
+        for f in files:
+            key = f.stem
             try:
-                results[key] = self._parse_csv(csv_file)
+                results[key] = parse_fn(f)
             except Exception as exc:
-                logger.warning("Failed to parse %s: %s", csv_file.name, exc)
+                logger.warning("Failed to parse %s: %s", f.name, exc)
                 results[key] = []
-        logger.info("Parsed %d CSV file(s): %s", len(results), ", ".join(results.keys()))
+
+        logger.info("Parsed %d %s file(s): %s", len(results), ext, ", ".join(results.keys()))
         return results
 
     @staticmethod
@@ -229,6 +246,13 @@ class DesigniteOperator(BaseOperator):
             for row in reader:
                 rows.append({k.strip(): v.strip() for k, v in row.items() if k})
         return rows
+
+    @staticmethod
+    def _parse_json(json_file: Path) -> list[dict[str, Any]]:
+        import json as _json
+        with open(json_file, encoding="utf-8") as fh:
+            data = _json.load(fh)
+        return data if isinstance(data, list) else [data]
 
     @staticmethod
     def _run_command(cmd: list[str], cwd: Path | None = None) -> None:
