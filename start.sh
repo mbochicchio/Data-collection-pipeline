@@ -5,30 +5,30 @@
 # Usage:
 #   ./start.sh
 # =============================================================================
-
 set -e
-
 BACKUP_FILE="./data/pipeline_backup.sql"
 DB_USER="pipeline"
 DB_NAME="pipeline"
+WORKSPACE_DIR="./workspace"
 
 shutdown() {
     echo ""
     echo "=============================================="
     echo "  Shutting down..."
     echo "=============================================="
-
     echo ""
-    echo "[1/2] Saving database backup to $BACKUP_FILE ..."
+    echo "[1/3] Saving database backup to $BACKUP_FILE ..."
     mkdir -p ./data
     docker compose exec pipeline-db pg_dump -U "$DB_USER" "$DB_NAME" > "$BACKUP_FILE"
     echo "      Backup saved."
-
     echo ""
-    echo "[2/2] Stopping containers..."
+    echo "[2/3] Cleaning workspace..."
+    rm -rf "$WORKSPACE_DIR"/designite_*
+    echo "      Workspace cleaned."
+    echo ""
+    echo "[3/3] Stopping containers..."
     docker compose down
     echo "      All containers stopped."
-
     echo ""
     echo "=============================================="
     echo "  Shutdown complete."
@@ -36,7 +36,6 @@ shutdown() {
     echo ""
     exit 0
 }
-
 trap shutdown SIGINT SIGTERM
 
 echo ""
@@ -72,7 +71,6 @@ echo ""
 echo "[2/2] Starting Airflow services..."
 docker compose up -d
 echo "      Services started. Airflow UI: http://localhost:8080"
-
 echo ""
 echo "=============================================="
 echo "  Pipeline running. Press Ctrl+C to stop."
