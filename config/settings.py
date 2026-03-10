@@ -93,15 +93,23 @@ DESIGNITE_PYTHON_HOST_WORKSPACE = os.getenv(
 )
 
 # ---------------------------------------------------------------------------
-# Airflow DAG defaults
+# Airflow DAG scheduling
 # ---------------------------------------------------------------------------
 
-# Cron schedule for the ingestion DAG (default: daily at midnight UTC)
-INGESTION_SCHEDULE = os.getenv("INGESTION_SCHEDULE", "@daily")
+# Use None to disable automatic scheduling (manual trigger only).
+# Use cron expressions or presets: @daily, @weekly, @hourly, etc.
 
-# Polling interval in minutes for the execution DAG
-# The execution DAG reschedules itself this often to look for pending versions
-EXECUTION_POLL_MINUTES = int(os.getenv("EXECUTION_POLL_MINUTES", "30"))
+# Ingestion DAG — discovers new versions from GitHub
+INGESTION_SCHEDULE = os.getenv("INGESTION_SCHEDULE", None) or None
+
+# Quality gate DAG — runs RepoQuester on pending projects
+QUALITY_GATE_SCHEDULE = os.getenv("QUALITY_GATE_SCHEDULE", None) or None
+
+# Execution DAG — runs Designite on eligible versions
+EXECUTION_SCHEDULE = os.getenv("EXECUTION_SCHEDULE", None) or None
+
+# Export DAG — manual by default
+EXPORT_SCHEDULE = os.getenv("EXPORT_SCHEDULE", None) or None
 
 # Maximum number of concurrent Designite analyses (limits parallelism)
 EXECUTION_MAX_ACTIVE_TASKS = int(os.getenv("EXECUTION_MAX_ACTIVE_TASKS", "4"))

@@ -36,7 +36,7 @@ from common.db import (
     analysis_exists_for_version,
 )
 from common.models import ProjectLanguage, Version
-from config.settings import WORKSPACE_DIR
+from config.settings import WORKSPACE_DIR, EXECUTION_SCHEDULE
 from plugins.operators.designite_operator import DesigniteOperator
 
 logger = logging.getLogger(__name__)
@@ -49,7 +49,7 @@ DEFAULT_ARGS = {
     "email_on_retry": False,
 }
 
-EXECUTION_SCHEDULE = "@daily"
+
 
 # ---------------------------------------------------------------------------
 # Helpers

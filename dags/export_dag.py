@@ -34,6 +34,7 @@ from pathlib import Path
 from airflow.sdk import dag, task
 
 from common.db import get_connection
+from config.settings import EXPORT_SCHEDULE
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +52,7 @@ EXPORT_PATH = Path("/opt/airflow/data/pipeline_export.duckdb")
 @dag(
     dag_id="export",
     description="Export the pipeline PostgreSQL database to a local DuckDB file.",
-    schedule=None,
+    schedule=EXPORT_SCHEDULE,
     start_date=datetime(2024, 1, 1, tzinfo=timezone.utc),
     catchup=False,
     default_args=DEFAULT_ARGS,

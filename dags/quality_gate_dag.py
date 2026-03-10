@@ -36,7 +36,7 @@ from airflow.sdk import dag, task
 from airflow.providers.standard.operators.python import ShortCircuitOperator
 
 from common.db import get_projects_without_quality_gate
-from config.settings import REPOQUESTER_DIR
+from config.settings import REPOQUESTER_DIR, QUALITY_GATE_SCHEDULE
 from plugins.operators.repoquester_operator import RepoQuesterOperator
 
 logger = logging.getLogger(__name__)
@@ -48,7 +48,7 @@ DEFAULT_ARGS = {
     "email_on_retry": False,
 }
 
-QUALITY_GATE_SCHEDULE = "@weekly"
+
 
 
 def _has_pending_projects() -> bool:
