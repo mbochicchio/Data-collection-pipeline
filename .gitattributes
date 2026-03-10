@@ -1,2 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+data/pipeline_backup.sql filter=lfs diff=lfs merge=lfs -text
+data/pipeline_export.duckdb filter=lfs diff=lfs merge=lfs -text
