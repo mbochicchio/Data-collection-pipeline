@@ -56,7 +56,7 @@ EXECUTION_SCHEDULE = "@daily"
 # ---------------------------------------------------------------------------
 
 
-def _get_eligible_versions(limit: int | None = 5) -> list[dict]:
+def _get_eligible_versions(limit: int | None = None) -> list[dict]:
     """
     Return versions that:
     - Have no analysis record yet (or only pending/running — retryable)
@@ -157,7 +157,7 @@ def execution_dag():
         - Skip if language is unsupported.
         - Clone repo, run Designite, parse CSV output, save results.
         """
-        eligible = _get_eligible_versions(limit=5)
+        eligible = _get_eligible_versions(limit=None)
         logger.info("%d version(s) eligible for analysis.", len(eligible))
 
         summary = {"processed": 0, "success": 0, "skipped": 0, "failed": 0, "errors": []}

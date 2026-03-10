@@ -30,3 +30,4 @@ python-dotenv
 
 # Retry decorator
 tenacity
+duckdb
