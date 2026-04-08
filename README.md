@@ -117,9 +117,9 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Authors and acknowledgment
  
-> **Dr. Matteo Bochicchio**
-> PhD Student · University of Milano-Bicocca
-> Department of Informatics, Systems and Communication — ESSeRE Lab
+> **Dr. Matteo Bochicchio** · 
+> PhD Student · University of Milano-Bicocca · 
+> Department of Informatics, Systems and Communication · ESSeRE Lab
 >
 > 📧 [matteo.bochicchio@unimib.it](mailto:matteo.bochicchio@unimib.it)
 > 🌐 [unimib.it/matteo-bochicchio](https://www.unimib.it/matteo-bochicchio)
